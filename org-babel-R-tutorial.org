@@ -1,0 +1,169 @@
+
+* Introduction
+Org-babel is an exciting new org-mode feature that lets you submit
+org-mode code blocks for evaluation.  This tutorial will show you some
+simple examples for using this with the R programming language. 
+* Setting up org-babel
+* Submitting code blocks 
+** Org-mode code blocks
+Let's start off with looking at a what a typical org-mode code block
+looks like.  We will be working with very simple R functions here to
+show off the capabilities of org-babel. 
+
+The following is a simple R code block in org-mode.  You can edit the
+code in its own window by typing C-c ' (that's a single quote), or
+just be editing the code within the actual org-mode buffer.  The nice
+thing about opening the code in its own buffer, is that the buffer is
+then in ESS mode, and all your key bindings, interaction with the
+inferior R process, and syntax highlighting work as expected. 
+#+begin_src R
+  square <- function(x) {
+    x * x
+  }
+  
+  square(4)
+#+end_src 
+** Submitting the code block using org-babel 
+The above code block would be useful if we wanted to export the
+org-mode document and have the R code in the resulting, say, HTML
+file, syntax highlighted. The feature that org-babel adds is to let us
+actually submit the code block to R to compute results for either
+display or further computation. 
+
+It's worth pointing out here that org-babel works with many languages,
+and they can all be intertwined in a single org-mode document.  So you
+might get results from submitting an R function, and then pass those
+results to a Python or shell script.  Org-mode then becomes a
+meta-programming tool.  We only concentrate on R code here, however. 
+
+*** Obtaining the return value only
+So let's see how to submit a code block.  Simply hit C-c C-c anywhere
+in the code block. (talk about the prompt the user will receive if
+execute varaible isn't set yet. 
+
+#+begin_src R
+  square <- function(x) {
+    x * x
+  }
+  
+  square(1:10)
+#+end_src 
+
+#+results:
+|   1 |
+|   4 |
+|   9 |
+|  16 |
+|  25 |
+|  36 |
+|  49 |
+|  64 |
+|  81 |
+| 100 |
+
+*** Obtaining all code block output 
+Notice how the results are put into an org-mode table by default. That
+is potentially very useful, but what if we just want to see the R
+output as it would appear printed in the R console?  Well, just as R
+function have arguments, org-babel source blocks have arguments.  One
+of the arguments controls how the output is displayed, the :results
+argument.  It is set to 'value' by default, but we can change it to
+'output' to see the usual R output.
+
+#+begin_src R :results output
+  square <- function(x) {
+    x * x
+  }
+  
+  square(1:10)
+#+end_src 
+
+#+results:
+:  [1]   1   4   9  16  25  36  49  64  81 100
+
+Note in the following example that :results output captures *all*
+function output, not just the return value. 
+
+#+begin_src R :results output
+  x <- 1:10
+  x
+  square <- function(x) {
+    cat("This is the square function.\n")
+    x * x
+  }
+  
+  square(1:10)
+#+end_src 
+
+#+results:
+:  [1]  1  2  3  4  5  6  7  8  9 10
+: This is the square function.
+:  [1]   1   4   9  16  25  36  49  64  81 
+  
+* Passing Data between code blocks
+** Mixing languages, the org-babel way
+Even though this tutorial covers the R language, one of org-babel's
+main strengths is its ability to act as a meta programming language,
+using results from a program written in one language as input to a
+program in another language.  
+
+In this example, we use a simple shell script to gather information on
+the size of directories in our file system, then tabulate the results
+using R. 
+
+#+srcname: directories
+#+begin_src sh :results replace
+  cd ~ && du -sc * |grep -v total
+#+end_src
+
+Notice two things.  First, we use the Notice how we have given the
+source code block a name in the above example. 
+
+Now let's do something with the data in R. 
+
+#+srcname: directory-pie-chart(dirs = directories)
+#+begin_src R :file dirs.png
+  pie(dirs[,1], labels = dirs[,2])
+#+end_src
+
+** R session-based evaluation 
+Often, we are just using R and don't need to obtain output from other
+programs, as was done above.  Usually, we would define functions or
+objects in one code block and want to use these objects in subsequent
+code blocks.  However, each time we submit a code block using C-c C-c,
+org-mode is firing up an R session, submitting the code, obtaining the
+return values, and closing down R.  So, by default, our R objects
+aren't persistent!  That's an important point.  Fortunately, there is
+an easy way to tell org-babel to submit our code blocks to a running R
+process in Emacs, just like we do with R files in ESS.  
+
+You simply use the :session argument. 
+#+begin_src R :session :results silent 
+  square <- function(x) {
+    cat("This is the square function.\n")
+    x * x
+  }
+  x <- 1:10 
+#+end_src 
+
+So, the above code block defines our function (square) and object
+(x).  Now we want to use it. Without :session, we couldn't.  Try it. 
+
+#+begin_src R
+  square(x)
+#+end_src
+
+#+begin_src R :session :results output
+  square(x)
+#+end_src
+
+#+results:
+: This is the square function.
+:  [1]   1   4   9  16  25  36  49  64  81 100
+
+
+* Handling graphical output 
+* Handling LaTeX output
+* Putting it all together to obtain a notebook-style interface to R
+* Tangling code 
+* Where to go from here? 
