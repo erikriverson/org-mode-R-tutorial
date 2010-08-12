@@ -367,12 +367,12 @@ several things to notice.
    capture graphical output from the source block and generate a file
    with the given name.  Then, the results section becomes an org-mode
    link to the newly created file. In the example below, the file
-   generated is called diamonds.png.  
+   generated is called diamonds.png.
 
-   If you have defined the Emacs lisp code for inline-image support
-   above, an overlay of the file will be inserted inline in the actual
-   org-mode document! Run the following source code block to see how
-   it works. 
+   Finally, If you have defined the Emacs lisp code for inline-image
+   support above, an overlay of the file will be inserted inline in
+   the actual org-mode document! Run the following source code block
+   to see how it works.
 
 #+begin_src R :results output :file diamonds.png
   library(ggplot2)
@@ -400,11 +400,14 @@ for other prerequisites.
 ** A simple example 
 
 Let's work on a very simple example, displaying the LaTeX description
-in our org-mode buffer, using the official LaTeX logo.
+in our org-mode buffer, using the official LaTeX logo. We will use R
+to generate the code that will display the official logo.  There's
+obviously no reason to do this except for demonstration purposes.
 
 First we must define an R source block that generates some LaTeX code
 that displays the logo. That's fairly straightforward. Notice we have
-given the source code block a name, so that we can call it later.
+given the source code block a name, so that we can call it later.  We
+use the #+srcname syntax to do this.
 
 #+srcname: R-latex
 #+begin_src R :results silent 
@@ -415,7 +418,7 @@ given the source code block a name, so that we can call it later.
   lf()
 #+end_src
 
-Now, we define a new source block using the "latex" language, instead
+Next, we define a new source block using the "latex" language, instead
 of "R", as we have been using. If we use a :file argument with a LaTeX
 source code block, org-babel will generate a file of the resulting dvi
 file that LaTeX produces, and display it.  This is just like
@@ -424,19 +427,21 @@ nothing new there.
 
 However, note we have a new argument, :noweb. What does that mean? In
 short, it let's us use syntax like <<CodeBlock()>> to insert the
-results of running a code block named CodeBlock into the current code
-block. So, in our example, we're running the R-latex code block
-defined above, and inserting the results, which need to be valid LaTeX
-code, into our latex code block. For this example, we of course didn't
-need to write an R function to generate such simple LaTeX output, but
-it can be much more complicated, as our next example shows.
+results of running a code block named CodeBlock into the current
+source code block. So, in our example, we're running the R-latex code
+block defined above, and inserting the results, which need to be valid
+LaTeX code, into our latex code block. For this example, we of course
+didn't need to write an R function to generate such simple LaTeX
+output, but it can be much more complicated, as our next example
+shows.  In short, our R code block is helping to write the LaTeX code
+block for us.
 
-Noweb was not made up by org-mode, it's been around for a while, and
-is used in Sweave, for example. The :noweb argument is set to 'no' be
-default, because the <<X>> syntax is actually valid in some languages
-that org-babel supports.
+Noweb was not invented for org-mode, it's been around for a while, and
+is used in Sweave, for example. See [[http://en.wikipedia.org/wiki/Noweb][its Wikipedia page]]. The :noweb
+argument is set to 'no' be default, because the <<X>> syntax is
+actually valid in some languages that org-babel supports.
 
-Run the following code block.  The R-latex R code block will be run,
+Run the following code block.  The "R-latex" R code block will be run,
 generating the string \\LaTeX, which is then substituted into this
 LaTeX code block, and then turned into the LaTeX logo by the latex
 program.
@@ -469,20 +474,18 @@ code in the results section.
 #+begin_src R :results output
   set.seed(1) 
   library(Hmisc)
-  
+    
   df <- data.frame(age = rnorm(100, 10),
                    gender = sample(c("Male", "Female"), 100, replace = TRUE),
                    study.drug = sample(c("Active", "Placebo"), 100, replace = TRUE))
-  
-  sf <- summary(study.drug ~ age + gender, data = df,
-                method = "reverse")
-  
+    
   latex(summary(study.drug ~ age + gender, data = df,
-                method = "reverse"), file = "", round = 2)
+                method = "reverse", overall = TRUE, test = TRUE), 
+        long = TRUE,  file = "", round = 2)
 #+end_src
 
 This next source code block is the one you should evaluate with C-c
-C-c.  You should be a graphical representation of the LaTeX ouput
+C-c.  You should be a graphical representation of a LaTeX table
 inserted into the buffer.
 
 #+begin_src latex :noweb yes :file Hmisc-latex.png
@@ -501,9 +504,10 @@ interface for R.
 
 This is potentially useful for countless tasks such as: a laboratory
 notebook, time series analysis of diet/exercise habits, tracking your
-favorite baseball team, or any reporting task you can think of. Since
-org-mode is a general-purpose authoring tool, with very strong
-exporting capabilities, almost anything is possible. 
+favorite baseball team over the course of a season, or any reporting
+task you can think of. Since org-mode is a general-purpose authoring
+tool, with very strong exporting capabilities, almost anything is
+possible.
 
 For instance, I use org-mode with org-babel to generate HTML for an R
 blog that I run. Several posters to the org-mode mailing list have
@@ -511,45 +515,53 @@ mentioned writing their entire theses in org-mode, and even books.
 
 I look at this workflow as an alternative to Sweave, that cuts out the
 need for learning LaTeX to produce high-quality documents, since
-org-mode is doing all the exporting for you.
+org-mode is doing all the exporting for you, including LaTeX if you'd
+like.  Getting LaTeX and HTML output essentially "for free" should not
+be underestimated!
 
 On some level, all these activities assume that you are a comfortable
 org-mode user, and that you will be writing code, conducting analyses,
 and possibly exporting results through the familiar Emacs and org-mode
-user interface. 
+user interface. Through the exporting functionality, org-mode offers
+many useful and easy-to-use options to share /results/ of your efforts
+with others, but what about the code itself? 
 
-Through the exporting functionality, org-mode offers many useful and
-easy-to-use options to share /results/ of your efforts with clients, but 
-what about the code itself? 
+Most people you have to share code with aren't going to want an
+org-mode file full of source code!
 
 * Tangling code 
 
 With many projects, you will have to share /code/ with other
 programmers, who are most likely not going to be programming in
-org-babel.  Thefore, sharing an org-mode file full of code is not an
-option. 
+org-mode.  Thefore, sharing an org-mode file full of code is not an
+option.
 
 Or, consider development of an R package.  The package building
-process obviously operates on .R file full of R code.  However, that's
-not what we have in a document like this one.
+process obviously operates on .R files, each full of R functions.
+However, that's not what we have in a document like this one.
 
 It is in situations like these where /tangling/ can be used. 
 
 The process of tangling an org-mode document essentially extracts the
-code contained in org-babel source code blocks, and places it in a
-file of the appropriate type.  How do we do this?  We use the :tangle
-source code block header argument to direct the org-mode what to
-do. Then, we actually tangle the document to extract the source code!
+code contained in org-mode source code blocks, and places it in a file
+of the appropriate type.  How do we do this?  We use the :tangle
+source code block header argument to direct org-mode what to do. Then,
+we actually tangle the document to extract the source code!
+
+Read on to learn how to perform each of these steps. 
 
 ** Instructing org-babel how to tangle with header arguments 
-Let's take a look at a few examples.
+Let's take a look at a few examples.  Each example contains an R
+comment, so that you can see in the resulting .R file where it came
+from.
 
 This first example will not extract any code from the source block.
 It is the default behavior. 
 
 #+begin_src R :tangle no
-
-
+# tangle was not specified
+x <- 1:10
+print(x) 
 #+end_src
 
 
@@ -558,15 +570,17 @@ org-babel-R-tutorial.R, since we don't specify a filename for the .R
 file.
 
 #+begin_src R :tangle yes
-
-
+# tangle was specified, but no file given
+x <- 1:10
+print(x)
 #+end_src
 
 This will place the tangled code in Rcode.R, since we specify that name. 
 
 #+begin_src R :tangle Rcode.R
-
-
+# tangle was specified, and a file name given (Rcode.R)
+x <- 1:10
+print(x)
 #+end_src
 
 Note that we will have multiple source code blocks in an org-babel
@@ -579,6 +593,16 @@ appropriate files of each type, containing only the code of that type.
 Finally, you can specify the :tangle argument as a buffer-wide
 setting, so that you don't have to specify it for every source code
 block.
+
+This opens up exciting possiblities like having a *single* org-mode
+file that includes:
+- all code for an R package
+- all documentation for the package
+- unit tests for the package
+- material to generate slides for presentations, through org-beamer
+- notes taken during package development 
+- links to emails with bug reports, feature requests, etc. 
+- a Makefile to build the package and documentation
 
 ** Tangling the document 
 
@@ -599,11 +623,11 @@ compiler or building an R package.
 
 Org-mode provides a rich set of functions and customizations for
 exporting documents into more human-readable forms, and for users who
-are not Emacs or org-mode users.  PDF documents through LaTeX, and
-HTML output are the most common commands.  Source code will be syntax
-highlighted.  
+are not Emacs or org-mode users.  The most commond methods are
+generating PDF documents through LaTeX, and HTML output. Source code
+will be syntax highlighted.
 
-With org-babel source blocks, you can choose to export code, results,
+With org-mode source blocks, you can choose to export code, results,
 neither, or both.
 
 As an example, type C-c C-e b to see an HTML version of this document.
@@ -612,17 +636,26 @@ The :exports argument controls this.  See the documentation for
 further examples. 
 
 Some fairly advanced setups, including complete report generation
-using R graphics and tables, can be acheived through this facility.
+using R graphics and tables, can be achieved through this facility.
 
-This is essentially an alternative to Sweave, with the advantages of:
+Using org-mode in this manner is essentially an alternative to Sweave,
+with the advantages of:
 - do not need to learn LaTeX or other markup language
 - any future org-mode export engines will be available to you
 - writing code in org-mode gives you access to a hyper-commenting
   system, with features such as TODO items, in-document linking, tags, 
   and code folding.
 
-You can use org-mode as a system for literate programming and reproducible research.
+If you're an advanced LaTeX user, you probably don't view point 1
+above as an advantage. :)
+
+Regardless, you can use org-mode as a system for literate programming
+and reproducible research, on projects large and small. 
 
 * Where to go from here? 
 
-We have seen how to integrate R into org-mode. 
+We have seen how to integrate R into org-mode. There are many good
+reasons to do this, including tying results to source code, code
+folding, exporting of code and results into many common formats,
+improving documentation, and the innumerable features that org-mode
+provides, and will continue to provide in the future.
