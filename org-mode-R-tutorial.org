@@ -35,11 +35,11 @@ buffer, insert graphical and tabular material into a buffer, or pass
 the results of R code to other programming languages such as Python. R
 code and results can be included in your exported org-mode documents,
 opening up several interesting possibilities for automatically
-generating comprehensive documentation. You can also extract the
-source code portions of an org-mode document for further processing,
-through a process called tangling. This tutorial will get you started
-using these org-mode features together with the R programming
-language.
+generating comprehensive documentation and advanced reports. You can
+also extract the source code portions of an org-mode document for
+further processing, through a process called tangling. This tutorial
+will get you started using these org-mode features together with the R
+programming language.
 
 If you are unfamiliar with org-mode itself, you can learn a lot more
 from the project's [[orgmode.org][website]]. There are many good tutorials available on
