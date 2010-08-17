@@ -44,14 +44,15 @@ programming language.
 If you are unfamiliar with org-mode itself, you can learn a lot more
 from the project's [[orgmode.org][website]]. There are many good tutorials available on
 org-mode already. The [[http://orgmode.org/guide/index.html][compact guide]] is a great place to start. This
-document focuses on source code support. Note that while the features
-being demonstrated in this document were being developed, the project
-was known as org-babel. Thus, many of the variables and function names
-reference 'org-babel' in their names. Org-babel is now distributed
-with org-mode, so many of the previous configuration hurdles are now
-avoided. Keep this in mind as you read old mailing list posts and
-documentation. The authors of org-babel are Eric Schulte and Dan
-Davison. They have worked very hard creating this amazing system!
+current document focuses on source code support. Note that while the
+features being demonstrated in this document were being developed, the
+project was known as org-babel. Thus, many of the variables and
+function names reference 'org-babel' in their names. Org-babel is now
+distributed with org-mode, so many of the previous configuration
+hurdles are now avoided. Keep this in mind as you read old mailing
+list posts and documentation. The authors of org-babel are Eric
+Schulte and Dan Davison. They have worked very hard creating this
+amazing system!
 
 Although you may be viewing this tutorial in an exported format like
 HTML or PDF, I wrote this tutorial in org-mode. You will benefit most
