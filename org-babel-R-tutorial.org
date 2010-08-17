@@ -529,8 +529,8 @@ For instance, I use org-mode to generate HTML for an R blog that I
 run. Several posters to the org-mode mailing list have mentioned
 writing their entire graduate theses in org-mode, and even books.
 
-I look at this workflow as an alternative to the excellent Sweave
-package, that cuts out the need for learning LaTeX to produce
+I look at this workflow as an alternative to the excellent [[http://www.stat.uni-muenchen.de/~leisch/Sweave/][Sweave]]
+package that cuts out the need for learning LaTeX to produce
 high-quality documents. Org-mode is doing all the exporting for you,
 including LaTeX if you'd like.  Getting LaTeX and HTML output
 essentially "for free" should not be underestimated!
@@ -644,16 +644,17 @@ are not Emacs or org-mode users.  The most commond methods are
 generating PDF documents through LaTeX, and HTML output. Source code
 will be syntax highlighted.
 
-With org-mode source blocks, you can choose to export code, results,
-neither, or both.
+With org-mode source blocks, you can choose to export the source code,
+the results of evaluating the source code, neither, or both.
 
 As an example, type C-c C-e b to see an HTML version of this document.
 
-The :exports header argument controls this.  See the documentation for
-further examples.
+The :exports header argument controls this.  See the [[http://orgmode.org/manual/Exporting-code-blocks.html#Exporting-code-blocks][documentation]] for
+further examples. 
 
-Some fairly advanced setups, including complete report generation
-using R graphics and tables, can be achieved through this facility.
+Some fairly sophisticated processes, including complete report
+generation using R graphics and tables, can be achieved through this
+facility.
 
 Using org-mode in this manner is essentially an alternative to Sweave,
 with the advantages of:
@@ -664,7 +665,7 @@ with the advantages of:
   and code folding.
 
 If you're an advanced LaTeX user, you probably don't view point 1
-above as an advantage. :)
+above as an advantage. :) 
 
 Whether or not you use all the features that org-mode provides, you
 can use the system for literate programming and reproducible research,
