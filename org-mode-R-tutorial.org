@@ -7,9 +7,14 @@
 This is an introduction to using R ([[http://www.R-project.org]]) source
 code within Emacs org-mode ([[http://orgmode.org]]).  Org-mode files use
 headlines to organize information.  Each top-level headline in this
-document starts with a single '*'.  While this is not an introduction
-to org-mode, you will need to know one command to proceed: use the
-`TAB` key on a headline to open it.
+document starts with a single '*', like the "Introduction" headline
+below.  While this is not an introduction to using org-mode, you will
+need to know one command to proceed: use the TAB key on a headline to
+open it. TAB will cycle through the possible visibility states of the
+information under the headline, and eventually TAB will collapse the
+headline back to how you see it now. One last command to note: C-c C-o
+opens links like those above in your web browser. I have tried to link
+to the appropriate documentation for each feature I describe.
 
 Since you are following along in org-mode, instead of reading this in
 an exported format like HTML or PDF, you will need org-mode 7.01 or
@@ -42,12 +47,15 @@ org-mode already. The [[http://orgmode.org/guide/index.html][compact guide]] is 
 document focuses on source code support. Note that while the features
 being demonstrated in this document were being developed, the project
 was known as org-babel.  Thus, many of the variables and function
-names have a reference to 'org-babel' in them.
+names reference 'org-babel' in their names. Org-babel is now
+distributed with org-mode, so many of the previous configuration
+hurdles are now avoided. Keep this in mind as you read old mailing
+list posts and documentation.
 
-Although you may be viewing this currently as an HTML or PDF document,
-I wrote this tutorial as an org-mode document. You will benefit most
-from it by following along in org-mode. You can interactively evaluate
-the examples to see org-mode in action.
+Although you may be viewing this tutorial in an exported format like
+HTML or PDF, I wrote this tutorial in org-mode. You will benefit most
+from it by following along in org-mode. Only then can you
+interactively evaluate the examples to see org-mode in action.
 
 This tutorial was written in GNU Emacs 23.2 on Ubuntu 10.04, org-mode
 version 7.01trans, pulled directly from the org-mode git repository.
