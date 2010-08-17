@@ -5,10 +5,10 @@
 #+OPTIONS: skip:t
 
 This is an introduction to using R ([[http://www.R-project.org]]) source
-code within Emacs org-mode ([[http://orgmode.org]]).  Org-mode files use
-headlines to organize information.  Each top-level headline in this
+code within Emacs org-mode ([[http://orgmode.org]]). Org-mode files use
+headlines to organize information. Each top-level headline in this
 document starts with a single '*', like the "Introduction" headline
-below.  While this is not an introduction to using org-mode, you will
+below. While this is not an introduction to using org-mode, you will
 need to know one command to proceed: use the TAB key on a headline to
 open it. TAB will cycle through the possible visibility states of the
 information under the headline, and eventually TAB will collapse the
@@ -21,7 +21,7 @@ an exported format like HTML or PDF, you will need org-mode 7.01 or
 greater to go interact with this tutorial. See [[http://orgmode.org/index.html#sec-3][here]] for instructions
 on how to download the latest version of org-mode. To see what version
 of org-mode you have installed, type M-x org-version, and hit
-<ENTER>. The result will be in the minibuffer.  If the version is
+<ENTER>. The result will be in the minibuffer. If the version is
 anything less than 7.01, you'll need to update to run the examples.
 If you have an older version of org-mode, and just want to read about
 the possibilities, you can continue on.
@@ -29,7 +29,7 @@ the possibilities, you can continue on.
 * Introduction
 
 Emacs org-mode 7.01 has an exciting new feature that lets you submit
-source code blocks within an org-mode document for evaluation.  This
+source code blocks within an org-mode document for evaluation. This
 lets you do things like insert the results of R code into an Emacs
 buffer, insert graphical and tabular material into a buffer, or pass
 the results of R code to other programming languages such as Python. R
@@ -46,11 +46,12 @@ from the project's [[orgmode.org][website]]. There are many good tutorials avail
 org-mode already. The [[http://orgmode.org/guide/index.html][compact guide]] is a great place to start. This
 document focuses on source code support. Note that while the features
 being demonstrated in this document were being developed, the project
-was known as org-babel.  Thus, many of the variables and function
-names reference 'org-babel' in their names. Org-babel is now
-distributed with org-mode, so many of the previous configuration
-hurdles are now avoided. Keep this in mind as you read old mailing
-list posts and documentation.
+was known as org-babel. Thus, many of the variables and function names
+reference 'org-babel' in their names. Org-babel is now distributed
+with org-mode, so many of the previous configuration hurdles are now
+avoided. Keep this in mind as you read old mailing list posts and
+documentation. The authors of org-babel are Eric Schulte and Dan
+Davison. They have worked very hard creating this amazing system!
 
 Although you may be viewing this tutorial in an exported format like
 HTML or PDF, I wrote this tutorial in org-mode. You will benefit most
@@ -80,7 +81,7 @@ For LaTeX support,
 
 I found that on my Ubuntu 10.04 installation, I had to install the
 texlive-latex-extra and texlive-fonts-recommended packages to get the
-LaTeX documents that org-mode produces to compile.  You can get both
+LaTeX documents that org-mode produces to compile. You can get both
 of these (plus dvipng) through the Ubuntu package texlive-full, so
 simply installing the `texlive-full` package may be the easiest option
 if you happen to be on Ubuntu. I do not have any experience with LaTeX
@@ -90,15 +91,15 @@ installation.
   
 * Setting up org-mode for source code evaluation 
 
-Setting up org-mode to run source code is very simple.  Since you are
+Setting up org-mode to run source code is very simple. Since you are
 reading the R tutorial, I will assume you want to specifically run R
 source code blocks within org-mode.
 
 The absolute, bare minimum setup you need to perform is to run the
 following Emacs lisp code. For a preview of what we're going to learn
 with in this tutorial, simply hit C-c C-c anywhere in the following code
-block!  You will be asked in the minibuffer to confirm that you want
-to evaluate the source code contained in the block.  Confirm this, and
+block! You will be asked in the minibuffer to confirm that you want
+to evaluate the source code contained in the block. Confirm this, and
 you'll be set up for the rest of the tutorial. You can also add the
 lines between the #+begin\_src and #+end\_src lines to your Emacs
 initialization file, so that they are always run when starting Emacs.
@@ -113,25 +114,25 @@ So go ahead, hit C-c C-c with point in the following code block.
 
 If you received any type of error message, please make sure that you
 have the proper version of org-mode installed by typing M-x
-org-version <Enter>.  You should have at least 7.01.  If you still are
+org-version <Enter>. You should have at least 7.01. If you still are
 running org-mode version 6.xx or before, please visit the project web
 site for instructions on downloading the latest version.
 
 If you didn't get any errors, org-mode is now setup to run the R
 examples that follow.
 
-Note to Windows users.  I believe the directory containing the R
+Note to Windows users. I believe the directory containing the R
 executable will have to be added to your PATH variable for you to run
 these examples. 
 
 ** Prompting for confirmation before evaluating code 
 There is one more variable I set in my Emacs initialization file
-relating to evaluating source code in org-mode.  By default, org-mode
+relating to evaluating source code in org-mode. By default, org-mode
 will ask you to confirm each and every time you evaluate a source code
-block.  If you ran the above source code block with C-c C-c, you will
+block. If you ran the above source code block with C-c C-c, you will
 have noticed that behavior.. I turn this feature off with the
 following line. If you choose, simply hit C-c C-c to evaluate it for
-this session, or put it in your Emacs initialization file.  Then, you
+this session, or put it in your Emacs initialization file. Then, you
 won't be asked before org-mode evaluates source code blocks. You may
 view this as a security risk. Always look over the code you're going
 to evaluate before submitting it. 
@@ -151,19 +152,19 @@ modifying the variable we defined above to include more languages.
 ** Exporting pretty-printed source code blocks
 
 Before I show you how to evaluate code in org-mode, let's start off
-with looking at a what a typical org-mode code block looks like.  We
-just saw a couple examples above of Emacs lisp source code blocks.  In
+with looking at a what a typical org-mode code block looks like. We
+just saw a couple examples above of Emacs lisp source code blocks. In
 what follows, we will be working with very simple R functions to show
 off the capabilities of org-mode.
 
-The following is a simple R code block in org-mode.  You can edit the
+The following is a simple R code block in org-mode. You can edit the
 code in its own window by typing C-c ' (that's a single quote), or
-just be editing the code within the org-mode buffer.  The nice thing
+just be editing the code within the org-mode buffer. The nice thing
 about opening the code in its own buffer with C-c ', is that the
 buffer is then in ESS mode. All the ESS key bindings, interaction
 with the inferior R process, and syntax highlighting work as expected.
 
-So here is an example of a source code block.  The defining feature is
+So here is an example of a source code block. The defining feature is
 the #+begin\_src and #+end\_src lines, with the language definition,
 "R", on the first line. 
 
@@ -183,8 +184,8 @@ changes you made reflected in this org-mode buffer.
   square(1:10)
 #+end_src 
 
-So now we have this code block defined.  Why would we want to do
-something like that with org-mode?  Mostly so that when we export an
+So now we have this code block defined. Why would we want to do
+something like that with org-mode? Mostly so that when we export an
 org-mode document, org-mode recognizes those lines as syntax, and
 highlights them appropriately in the HTML or LaTeX output. The lines
 will be syntax highlighted just like they would be in an R code buffer
@@ -196,7 +197,7 @@ This subtree should be exported to an HTML file and displayed in your
 web browser. Notice how the source code is syntax highlighted. 
 
 Note: for syntax highlighting in exported HTML to work, htmlize.el
-must be in your load-path.  The easiest way to make that happen if
+must be in your load-path. The easiest way to make that happen if
 you haven't already is to run the following Emacs lisp code, *after*
 changing the "/path/to" portion to reflect your local setup.
 
@@ -215,9 +216,9 @@ computation.
 
 It is worth pointing out here that org-mode works with many
 languages, and they can all be intertwined in a single org-mode
-document.  So you might get results from submitting an R function, and
+document. So you might get results from submitting an R function, and
 then pass those results to a Python or shell script through an
-org-table.  Org-mode then becomes a meta-programming tool.  We only
+org-table. Org-mode then becomes a meta-programming tool. We only
 concentrate on R code here, however.
 
 We did see above in the setup section that we have Emacs lisp code in
@@ -229,7 +230,7 @@ Next, let's actually submit some R code.
 
 *** Obtaining the return value of an R code block
 
-We will now see how to submit a code block.  Just as in the
+We will now see how to submit a code block. Just as in the
 Introduction with Emacs lisp code, simply hit C-c C-c anywhere in the
 code block to submit it to R. If you didn't set the confirmation
 variable to nil as I described above, you'll have to confirm that you
@@ -245,27 +246,27 @@ following R code block with C-c C-c and see what happens.
 #+end_src 
 
 If you've submitted the code block using C-c C-c, and everything went
-well, you should have noticed that your buffer was modified.  Org-mode
+well, you should have noticed that your buffer was modified. Org-mode
 has inserted a results section underneath the code block, and above
 this text. These results are from running the R code block, and
-recording the last value.  This is just like how R returns the last
-value of a function as its return value.  Notice how the results have
-been inserted as an org-table.  This can be very useful.  However,
+recording the last value. This is just like how R returns the last
+value of a function as its return value. Notice how the results have
+been inserted as an org-table. This can be very useful. However,
 what if we wanted to see the standard R output? You will see how to do
 that in the next section.
 
 You can also try changing the source code block, and re-running it.
 For example, try changing the call to the square function to 1:12,
-then hit C-c C-c again.  The results have updated to the new value!
+then hit C-c C-c again. The results have updated to the new value!
 
 *** Obtaining all code block output 
 
 We just saw how the last value after evaluating our code is put into
 an org-mode table by default. That is potentially very useful, but
 what if we just want to see the R output as it would appear printed in
-the R console?  Well, just as R function have arguments, org-mode
-source blocks have arguments.  One of the arguments controls how the
-output is displayed, the :results argument.  It is set to 'value' by
+the R console? Well, just as R function have arguments, org-mode
+source blocks have arguments. One of the arguments controls how the
+output is displayed, the :results argument. It is set to 'value' by
 default, but we can change it to 'output' to see the usual R
 output. Notice the syntax for setting source code block arguments
 below.
@@ -281,7 +282,7 @@ below.
 
 Now we see the typical R notation for printing a vector. Note in the
 following example that setting `:results output` captures *all*
-function output, not just the return value.  We capture things printed
+function output, not just the return value. We capture things printed
 to the screen with the `cat` function for example, or the printing of
 the variable `x`.
 
@@ -310,19 +311,19 @@ per file, or system-wide.
 
 One of the biggest limitations to using code blocks like above is that
 a new R session is started up `behind the scenes` when we evaluate
-each code block.  So, if we define a function in one code block, and
-want to use it another code block later on, we are out of luck.  This
+each code block. So, if we define a function in one code block, and
+want to use it another code block later on, we are out of luck. This
 limitation can be overcome by using R session-based evaluation, which
 sends the R code to a running ESS process.
 
 ** R session-based evaluation 
 
 Often in R, we will define functions or objects in one code block
-and want to use these objects in subsequent code blocks.  However,
+and want to use these objects in subsequent code blocks. However,
 each time we submit a code block using C-c C-c, org-mode is firing up
 an R session, submitting the code, obtaining the return values, and
-closing down R.  So, by default, our R objects aren't persistent!
-That's an important point.  Fortunately, there is an easy way to tell
+closing down R. So, by default, our R objects aren't persistent!
+That's an important point. Fortunately, there is an easy way to tell
 org-mode to submit our code blocks to a running R process in Emacs,
 just like we do with R files in ESS.
 
@@ -363,7 +364,7 @@ program in another language.
 
 See
 [[http://orgmode.org/worg/org-contrib/babel/intro.php#meta-programming-language]]
-for an example of this.  To keep things as focused on R as possible, I
+for an example of this. To keep things as focused on R as possible, I
 chose not to include an example like the one found in the link in this
 tutorial.
 
@@ -371,7 +372,7 @@ tutorial.
 
 Here is a really cool feature of evaluating source code in
 org-mode. We can insert images generated by R code blocks inline in
-our Emacs buffer!  To enable this functionality, we need to evaluate a
+our Emacs buffer! To enable this functionality, we need to evaluate a
 bit of Emacs lisp code. If this feature is something you want every
 time you use org-mode, consider placing the code in your Emacs
 initialization file. Either way, evaluate it with C-c C-c.
@@ -384,11 +385,11 @@ initialization file. Either way, evaluate it with C-c C-c.
 The following R code generates some graphical output. There are
 several things to notice.
 
-1) :results output is specified.  This is because the figure is
+1) :results output is specified. This is because the figure is
    generated using the ggplot2 package in R, which is based on
-   something called `grid` graphics.  Grid graphics need to be
+   something called `grid` graphics. Grid graphics need to be
    explicitly printed when called within a function for their output
-   to be displayed. See, for example, [[http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-do-lattice_002ftrellis-graphics-not-work_003f][R FAQ 7.22]].  When :results value
+   to be displayed. See, for example, [[http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-do-lattice_002ftrellis-graphics-not-work_003f][R FAQ 7.22]]. When :results value
    (the default) is active, Org-mode is generating an R function
    wrapper. The upshot is: when generating grid-based graphical output
    within org-mode, you need to either use :results output, wrap the
@@ -398,7 +399,7 @@ several things to notice.
 
 2) We use a new source code block argument, :file. This argument will
    capture graphical output from the source block and generate a file
-   with the given name.  Then, the results section becomes an org-mode
+   with the given name. Then, the results section becomes an org-mode
    link to the newly created file. In the example below, the file
    generated is called diamonds.png.
 
@@ -421,23 +422,23 @@ within your org-mode documents!
 * Inserting LaTeX output
 
 We have just seen how to include graphical output in our org-mode
-buffer.  We can also do something similar with LaTeX output generated
-by R.  Of course, this requires at least a working LaTeX
+buffer. We can also do something similar with LaTeX output generated
+by R. Of course, this requires at least a working LaTeX
 installation. You will also need to install the dvipng program (dvipng
-package in Ubuntu, for instance).  See the System Requirements section
+package in Ubuntu, for instance). See the System Requirements section
 for other prerequisites.
 
 ** A simple example 
 
 Let's work on a very simple example, displaying a LaTeX description
 in our org-mode buffer, using the official LaTeX logo. We will use R
-to generate the code that will display the official logo.  There's
+to generate the code that will display the official logo. There's
 obviously no reason to do this except for demonstration purposes.
 
 First we must define an R source block that generates some LaTeX code
 that displays the logo. That's fairly straightforward. Notice we have
-given the source code block a name, so that we can call it later.  We
-use the #+srcname syntax to do this.  Note that you *don't* have to
+given the source code block a name, so that we can call it later. We
+use the #+srcname syntax to do this. Note that you *don't* have to
 run the following code block, it will be run automatically by the next
 one.
 
@@ -453,7 +454,7 @@ one.
 Next, we define a new source block using the "latex" language, instead
 of "R", as we have been using. If we use a :file argument with a LaTeX
 source code block, org-mode will generate a file of the resulting dvi
-file that LaTeX produces, and display it.  This is just like
+file that LaTeX produces, and display it. This is just like
 generating graphical output from R using a :file argument, so there is
 nothing new there.
 
@@ -464,7 +465,7 @@ code block. So, in our example, we're running the R-latex code block
 defined above, and inserting the results, which need to be valid LaTeX
 code, into our latex code block. For this example, we of course didn't
 need to write an R function to generate such simple LaTeX output, but
-it can be much more complicated, as our next example shows.  In short,
+it can be much more complicated, as our next example shows. In short,
 our R code block is helping to write the LaTeX code block for us.
 
 Noweb was not invented for org-mode, it's been around for a while, and
@@ -472,7 +473,7 @@ is used in Sweave, for example. See [[http://en.wikipedia.org/wiki/Noweb][its Wi
 argument is set to 'no' be default, because the <<X>> syntax is
 actually valid in some languages that org-mode supports.
 
-Run the following code block.  The "R-latex" R code block will be run,
+Run the following code block. The "R-latex" R code block will be run,
 generating the string \\LaTeX, which is then substituted into this
 LaTeX code block, and then turned into the LaTeX logo by the latex
 program.
@@ -494,7 +495,7 @@ and then do: > install.packages("Hmisc")
 
 You do /not/ need to run the following code block. Running it will
 produce raw LaTeX code. This is fine when we run the latex code block,
-because it will be inserted and correctly processed.  But if you do
+because it will be inserted and correctly processed. But if you do
 run this next R source code block, you'll just get a bunch of LaTeX
 code in the results section.
 
@@ -513,7 +514,7 @@ code in the results section.
 #+end_src
 
 This next source code block is the one you should evaluate with C-c
-C-c.  You should be a graphical representation of a LaTeX table
+C-c. You should be a graphical representation of a LaTeX table
 inserted into the buffer.
 
 #+begin_src latex :noweb yes :file Hmisc-latex.png
@@ -541,7 +542,7 @@ writing their entire graduate theses in org-mode, and even books.
 I look at this workflow as an alternative to the excellent [[http://www.stat.uni-muenchen.de/~leisch/Sweave/][Sweave]]
 package that cuts out the need for learning LaTeX to produce
 high-quality documents. Org-mode is doing all the exporting for you,
-including LaTeX if you'd like.  Getting LaTeX and HTML output
+including LaTeX if you'd like. Getting LaTeX and HTML output
 essentially "for free" should not be underestimated!
 
 On some level, all these activities assume that you are a comfortable
@@ -558,10 +559,10 @@ org-mode file full of source code!
 
 With many projects, you will have to share /code/ with other
 programmers, who are most likely not going to be programming in
-org-mode.  Therefore, sharing an org-mode file full of code is not an
+org-mode. Therefore, sharing an org-mode file full of code is not an
 option.
 
-Or, consider development of an R package.  The package building
+Or, consider development of an R package. The package building
 process obviously operates on .R files, each full of R functions.
 However, that's not what we have in a document like this one.
 
@@ -569,14 +570,14 @@ It is in situations like these where /tangling/ can be used.
 
 The process of tangling an org-mode document essentially extracts the
 code contained in org-mode source code blocks, and places it in a file
-of the appropriate type.  How do we do this?  We use the :tangle
+of the appropriate type. How do we do this? We use the :tangle
 source code block header argument to direct org-mode what to do. Then,
 we call the tangle function on the file to extract the source code!
 
 Read on to learn how to perform each of these steps. 
 
 ** Instructing org-mode how to tangle with header arguments 
-Let's take a look at a few examples.  Each example contains an R
+Let's take a look at a few examples. Each example contains an R
 comment, so that you can see in the resulting .R file where it came
 from.
 
@@ -609,7 +610,7 @@ print(x)
 #+end_src
 
 Note that we will have multiple source code blocks in an org-mode
-file, and they might have different types.  For example, we might have
+file, and they might have different types. For example, we might have
 R and Python code in the same document, but different source blocks. 
 
 This is no problem, as the tangling mechanism will generate
@@ -640,7 +641,7 @@ to C-c C-v C-t.
 
 Org-mode confirms in the minibuffer how many code blocks have been
 tangled, and inspecting the file system should show that your source
-code files have been created.  There exists a hook function that will
+code files have been created. There exists a hook function that will
 run any post-processing programs you have defined, for example, a
 compiler, `R CMD build`, or running `make` with a Makefile, possibly
 itself generated from the org-mode document!
@@ -649,7 +650,7 @@ itself generated from the org-mode document!
 
 Org-mode provides a rich set of functions and customizations for
 exporting documents into more human-readable forms, and for users who
-are not Emacs or org-mode users.  The most common methods are
+are not Emacs or org-mode users. The most common methods are
 generating PDF documents through LaTeX, and HTML output. Source code
 will be syntax highlighted.
 
@@ -658,7 +659,7 @@ the results of evaluating the source code, neither, or both.
 
 As an example, type C-c C-e b to see an HTML version of this document.
 
-The :exports header argument controls this.  See the [[http://orgmode.org/manual/Exporting-code-blocks.html#Exporting-code-blocks][documentation]] for
+The :exports header argument controls this. See the [[http://orgmode.org/manual/Exporting-code-blocks.html#Exporting-code-blocks][documentation]] for
 further examples. 
 
 Some fairly sophisticated processes, including complete report
@@ -689,21 +690,23 @@ formats, improving documentation, and the innumerable features that
 org-mode provides, and will continue to provide in the future. 
 
 As with all new processes, it can be a challenge to start working with
-source code this way.  As a current org-mode user, I think the
+source code this way. As a current org-mode user, I think the
 benefits are clear.
 
 As for what to do next, try looking at the [[http://orgmode.org/worg/org-contrib/babel/uses.php][results]] of some of those
-who use org-mode with org-babel to accomplish interesting things.
+who use org-mode with org-babel to accomplish interesting things. You
+can look at current documentation for R support [[http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.php][here]].
 
-You can write your Emacs initialization file in org-mode! These
-[[http://orgmode.org/worg/org-contrib/babel/intro.php#sec-8_2_1][instructions]] are slightly out of date, but they give you a general
-idea of how to proceed.  Essentially, your master Emacs init file will
-simply tangle an org-mode file full Emacs lisp code blocks, and then
-load the resulting file.  My Emacs init file is around 1000 lines
-long, so organizing it in this fashion is very useful to me. 
+For an exercise in using org-mode with source code, you can write your
+Emacs initialization file in org-mode! These [[http://orgmode.org/worg/org-contrib/babel/intro.php#sec-8_2_1][instructions]] are slightly
+out of date, but they give you a general idea of how to proceed.
+Essentially, your master Emacs init file will simply tangle an
+org-mode file full Emacs lisp code blocks, and then load the resulting
+file. My Emacs init file is around 1000 lines long, so organizing it
+in a hierarchy with embedded tags and links is very useful to me.
 
-In short, there are many possibilities using these techniques! In
-certain ways, I have only scratched the surface of the capabilities of
-org-mode in this tutorial.  As always, the [[http://orgmode.org/manual/index.html#Top][official manual]] will be the
+In short, there are many possibilities using these techniques! In many
+ways, I have only scratched the surface of the capabilities of
+org-mode in this tutorial. As always, the [[http://orgmode.org/manual/index.html#Top][official manual]] will be the
 source of the most up-to-date information and features of this great
 tool.
