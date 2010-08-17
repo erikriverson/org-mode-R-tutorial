@@ -2,19 +2,20 @@
 #+AUTHOR:    Erik Iverson
 #+EMAIL:     eriki@ccbr.umn.edu
 #+INFOJS_OPT: view:info toc:nil
+#+OPTIONS: skip:t
 
 This is an introduction to using R ([[http://www.R-project.org]]) source
-code with Emacs org-mode ([[http://orgmode.org]]).  Org-mode files use
+code within Emacs org-mode ([[http://orgmode.org]]).  Org-mode files use
 headlines to organize information.  Each top-level headline in this
 document starts with a single '*'.  While this is not an introduction
 to org-mode, you will need to know one command to proceed: use the
 `TAB` key on a headline to open it.
 
-If you're following along in org-mode, instead of reading this in an
-exported format like HTML or PDF, you will need org-mode 7.01 or
-greater to go through this tutorial. See [[http://orgmode.org/index.html#sec-3][here]] for instructions on how
-to download the latest version of orgmode. To see what version of
-org-mode you have installed, type M-x org-version, and hit
+Since you are following along in org-mode, instead of reading this in
+an exported format like HTML or PDF, you will need org-mode 7.01 or
+greater to go interact with this tutorial. See [[http://orgmode.org/index.html#sec-3][here]] for instructions
+on how to download the latest version of org-mode. To see what version
+of org-mode you have installed, type M-x org-version, and hit
 <ENTER>. The result will be in the minibuffer.  If the version is
 anything less than 7.01, you'll need to update to run the examples.
 If you have an older version of org-mode, and just want to read about
@@ -673,10 +674,28 @@ on projects large and small.
 
 * Where to go from here? 
 
-We have seen how to integrate R into org-mode. There are many good
-reasons to do this, including tying results to source code, code
-folding, exporting of code and results into many common formats,
-improving documentation, and the innumerable features that org-mode
-provides, and will continue to provide in the future.
+We have seen how to submit R code for evaluation in org-mode. There
+are many good reasons to do this, including tying results to source
+code, code folding, exporting of code and results into many common
+formats, improving documentation, and the innumerable features that
+org-mode provides, and will continue to provide in the future. 
 
+As with all new processes, it can be a challenge to start working with
+source code this way.  As a current org-mode user, I think the
+benefits are clear.
 
+As for what to do next, try looking at the [[http://orgmode.org/worg/org-contrib/babel/uses.php][results]] of some of those
+who use org-mode with org-babel to accomplish interesting things.
+
+You can write your Emacs initialization file in org-mode! These
+[[http://orgmode.org/worg/org-contrib/babel/intro.php#sec-8_2_1][instructions]] are slightly out of date, but they give you a general
+idea of how to proceed.  Essentially, your master Emacs init file will
+simply tangle an org-mode file full Emacs lisp code blocks, and then
+load the resulting file.  My Emacs init file is around 1000 lines
+long, so organizing it in this fashion is very useful to me. 
+
+In short, there are many possibilities using these techniques! In
+certain ways, I have only scratched the surface of the capabilities of
+org-mode in this tutorial.  As always, the [[http://orgmode.org/manual/index.html#Top][official manual]] will be the
+source of the most up-to-date information and features of this great
+tool.
