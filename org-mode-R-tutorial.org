@@ -18,7 +18,7 @@ org-mode you have installed, type M-x org-version, and hit
 <ENTER>. The result will be in the minibuffer.  If the version is
 anything less than 7.01, you'll need to update to run the examples.
 If you have an older version of org-mode, and just want to read about
-the possibilties, you can continue on.
+the possibilities, you can continue on.
 
 * Introduction
 
@@ -73,7 +73,7 @@ I found that on my Ubuntu 10.04 installation, I had to install the
 texlive-latex-extra and texlive-fonts-recommended packages to get the
 LaTeX documents that org-mode produces to compile.  You can get both
 of these (plus dvipng) through the Ubuntu package texlive-full, so
-simply installing the `texlive-full` package may be the easist option
+simply installing the `texlive-full` package may be the easiest option
 if you happen to be on Ubuntu. I do not have any experience with LaTeX
 under Microsoft Windows, but certainly it should be possible for all
 these examples to work under that OS, assuming you have a local LaTeX
@@ -187,7 +187,7 @@ This subtree should be exported to an HTML file and displayed in your
 web browser. Notice how the source code is syntax highlighted. 
 
 Note: for syntax highlighting in exported HTML to work, htmlize.el
-must be in your load-path.  The easiest way to make that happpen if
+must be in your load-path.  The easiest way to make that happen if
 you haven't already is to run the following Emacs lisp code, *after*
 changing the "/path/to" portion to reflect your local setup.
 
@@ -224,7 +224,7 @@ We will now see how to submit a code block.  Just as in the
 Introduction with Emacs lisp code, simply hit C-c C-c anywhere in the
 code block to submit it to R. If you didn't set the confirmation
 variable to nil as I described above, you'll have to confirm that you
-want to evalute the following R code. So go ahead, evaluate the
+want to evaluate the following R code. So go ahead, evaluate the
 following R code block with C-c C-c and see what happens. 
 
 #+begin_src R
@@ -317,7 +317,7 @@ That's an important point.  Fortunately, there is an easy way to tell
 org-mode to submit our code blocks to a running R process in Emacs,
 just like we do with R files in ESS.
 
-You simply use the :session argument to the org-bable source block.   
+You simply use the :session argument to the org-mode source block.   
 
 #+begin_src R :session :results output
   square <- function(x) {
@@ -381,7 +381,7 @@ several things to notice.
    explicitly printed when called within a function for their output
    to be displayed. See, for example, [[http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-do-lattice_002ftrellis-graphics-not-work_003f][R FAQ 7.22]].  When :results value
    (the default) is active, Org-mode is generating an R function
-   wrapper. The upshot is: when generating grid-based grapical output
+   wrapper. The upshot is: when generating grid-based graphical output
    within org-mode, you need to either use :results output, wrap the
    graphical function in a print call, or use the :session
    argument. See this mailing list [[http://www.mail-archive.com/emacs-orgmode@gnu.org/msg25944.html][post]] for more explanation if you'd
@@ -515,7 +515,7 @@ inserted into the buffer.
 
 Combining the techniques shown above: submitting code blocks,
 capturing output for further manipulation, and inserting graphical and
-tabualar material, we essentially have a basic notebook-style
+tabular material, we essentially have a basic notebook-style
 interface for R.
 
 This is potentially useful for countless tasks such as: a laboratory
@@ -549,7 +549,7 @@ org-mode file full of source code!
 
 With many projects, you will have to share /code/ with other
 programmers, who are most likely not going to be programming in
-org-mode.  Thefore, sharing an org-mode file full of code is not an
+org-mode.  Therefore, sharing an org-mode file full of code is not an
 option.
 
 Or, consider development of an R package.  The package building
@@ -610,7 +610,7 @@ Finally, you can specify the :tangle argument as a buffer-wide
 setting, so that you don't have to specify it for every source code
 block.
 
-This opens up exciting possiblities like having a *single* org-mode
+This opens up exciting possibilities like having a *single* org-mode
 file that includes:
 - all code for an R package
 - all documentation for the package
@@ -630,7 +630,7 @@ We simply have to call the org-babel-tangle function, bound by default
 to C-c C-v C-t. 
 
 Org-mode confirms in the minibuffer how many code blocks have been
-tangled, and inspecting the filesystem should show that your source
+tangled, and inspecting the file system should show that your source
 code files have been created.  There exists a hook function that will
 run any post-processing programs you have defined, for example, a
 compiler, `R CMD build`, or running `make` with a Makefile, possibly
@@ -640,7 +640,7 @@ itself generated from the org-mode document!
 
 Org-mode provides a rich set of functions and customizations for
 exporting documents into more human-readable forms, and for users who
-are not Emacs or org-mode users.  The most commond methods are
+are not Emacs or org-mode users.  The most common methods are
 generating PDF documents through LaTeX, and HTML output. Source code
 will be syntax highlighted.
 
