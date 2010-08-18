@@ -429,6 +429,17 @@ installation. You will also need to install the dvipng program (dvipng
 package in Ubuntu, for instance). See the System Requirements section
 for other prerequisites.
 
+You also have to add LaTeX to the list of supported languages. You can
+do that by running the following code block with C-c C-c.
+
+#+begin_src emacs-lisp :results silent
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)
+     (latex . t)))
+#+end_src
+
+
 ** A simple example 
 
 Let's work on a very simple example, displaying a LaTeX description
