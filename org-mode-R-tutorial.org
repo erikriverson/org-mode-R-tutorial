@@ -82,26 +82,28 @@ Here is a list of software we need to run the examples:
 For LaTeX support, 
 4) a working LaTeX installation, see [[http://latex-project.org]]. Windows users
    can use [[http://miktex.org/][MikTeX]].  
-5) dvipng program (comes with MikTeX)
+5) dvipng program (comes with MikTeX or texlive-full Ubuntu package)
 
-I found that on my Ubuntu 10.04 installation, I had to install the
-texlive-latex-extra and texlive-fonts-recommended packages to get the
-LaTeX documents that org-mode produces to compile. You can get both of
-these (plus dvipng) through the Ubuntu package texlive-full, so simply
-installing the `texlive-full` package may be the easiest option if you
-happen to be on Ubuntu.
+6) Some extra LaTeX packages (comes with texlive-full Ubuntu package): 
 
-For Windows users who have installed MikTeX, I had to use the MikTeX
-package manager to install the following packages for LaTeX support to
-work: soul, marvosysm, wasysym, wasy, zhmetrics. Install these and you
-should be good to go.
+   I found that on my Ubuntu 10.04 installation, I had to install the
+   texlive-latex-extra and texlive-fonts-recommended packages to get
+   the LaTeX documents that org-mode produces to compile. You can get
+   both of these (plus dvipng) through the Ubuntu package
+   texlive-full, so simply installing the `texlive-full` package may
+   be the easiest option if you happen to be on Ubuntu.
+
+   For Windows users who have installed MikTeX, I had to use the
+   MikTeX package manager to install the following packages for LaTeX
+   support to work: soul, marvosysm, wasysym, wasy, zhmetrics. Install
+   these and you should be good to go.
 
 For inline image support,
-6) libpng, GNU/Linux users probably have this.  I found under Windows
+7) libpng, GNU/Linux users probably have this.  I found under Windows
    that I had to download
    http://downloads.sourceforge.net/gnuwin32/libpng-1.2.37-setup.exe
    and after running the installation program, *manually* copy the
-   libpng12.dll and zlib1.dll files into my emacs-23.2\bin directory,
+   libpng12.dll and zlib1.dll files into my emacs-23.x\bin directory,
    and then restart emacs for inline image support to work. One easy
    way to test if png support is working is to simply open a png file
    within Emacs from dired.
@@ -138,16 +140,16 @@ site for instructions on downloading the latest version.
 If you didn't get any errors, org-mode is now setup to run the R
 examples that follow.
 
-Note to Windows users. I believe the directory containing the R
-executable will have to be added to your PATH variable for you to run
-these examples. 
+Note to Windows users. Make sure the directory containing the R
+executable is added to your PATH variable for you to run these
+examples.
 
 ** Prompting for confirmation before evaluating code 
 There is one more variable I set in my Emacs initialization file
 relating to evaluating source code in org-mode. By default, org-mode
 will ask you to confirm each and every time you evaluate a source code
 block. If you ran the above source code block with C-c C-c, you will
-have noticed that behavior.. I turn this feature off with the
+have noticed that behavior. I turn this feature off with the
 following line. If you choose, simply hit C-c C-c to evaluate it for
 this session, or put it in your Emacs initialization file. Then, you
 won't be asked before org-mode evaluates source code blocks. You may
@@ -175,8 +177,8 @@ what follows, we will be working with very simple R functions to show
 off the capabilities of org-mode.
 
 The following is a simple R code block in org-mode. You can edit the
-code in its own window by typing C-c ' (that's a single quote), or
-just be editing the code within the org-mode buffer. The nice thing
+code in its own buffer by typing C-c ' (that's a single quote), or
+just by editing the code within the org-mode buffer. The nice thing
 about opening the code in its own buffer with C-c ', is that the
 buffer is then in ESS mode. All the ESS key bindings, interaction
 with the inferior R process, and syntax highlighting work as expected.
@@ -190,7 +192,9 @@ and hitting C-c ' (that's a single quote). This will open a new
 buffer, with the contents of the source code block. You can then edit
 this buffer just like any other R file, as it is in R-mode from
 ESS. When finished editing, hit C-c ' again, and you'll see any
-changes you made reflected in this org-mode buffer.
+changes you made reflected in this org-mode buffer. You can control
+how this new buffer is displayed by setting the org-src-window-setup
+variable in Emacs.
 
 #+begin_src R
   square <- function(x) 
@@ -203,10 +207,10 @@ changes you made reflected in this org-mode buffer.
 
 So now we have this code block defined. Why would we want to do
 something like that with org-mode? Mostly so that when we export an
-org-mode document, org-mode recognizes those lines as syntax, and
-highlights them appropriately in the HTML or LaTeX output. The lines
-will be syntax highlighted just like they would be in an R code buffer
-in Emacs.
+org-mode document to a more human-readable format, org-mode recognizes
+those lines as syntax, and highlights them appropriately in the HTML
+or LaTeX output. The lines will be syntax highlighted just like they
+would be in an R code buffer in Emacs.
 
 Try this for yourself. With point anywhere in this subtree, for
 example, put it here [ ], hit C-c C-e 1 b (that's the number 'one').
@@ -214,9 +218,10 @@ This subtree should be exported to an HTML file and displayed in your
 web browser. Notice how the source code is syntax highlighted. 
 
 Note: for syntax highlighting in exported HTML to work, htmlize.el
-must be in your load-path. The easiest way to make that happen if
-you haven't already is to run the following Emacs lisp code, *after*
-changing the "/path/to" portion to reflect your local setup.
+must be in your load-path. The easiest way to make that happen if you
+haven't already is to run the following Emacs lisp code, *after*
+changing the "/path/to" portion to reflect your local setup. I have
+the following in my Emacs init file. 
 
 #+begin_src emacs-lisp :results silent 
  (add-to-list 'load-path "/path/to/org-mode/contrib/lisp")
