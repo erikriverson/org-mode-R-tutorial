@@ -67,7 +67,8 @@ Please send any questions or corrections to eriki@ccbr.umn.edu.
 ** System Prerequisites for this tutorial 
 
 First, we need to make sure our environment is setup correctly for the
-examples to run.
+examples to run.  This requires a bit more work under Windows than
+others, see below.
 
 Here is a list of software we need to run the examples:
 1) org-mode 7.01 or greater, see [[http://orgmode.org]]
@@ -75,20 +76,35 @@ Here is a list of software we need to run the examples:
 3) The R examples use the ggplot2 and Hmisc packages from CRAN. Simply install from the
    R command line by issuing the command, 
    > install.packages(c("ggplot2", "Hmisc"))
+   R must be in your PATH environment variable.  For Windows users, you will probably
+   have to add this yourself. 
 
 For LaTeX support, 
-4) a working LaTeX installation, see [[http://latex-project.org]]
-5) dvipng program
+4) a working LaTeX installation, see [[http://latex-project.org]]. Windows users
+   can use [[http://miktex.org/][MikTeX]].  
+5) dvipng program (comes with MikTeX)
 
 I found that on my Ubuntu 10.04 installation, I had to install the
 texlive-latex-extra and texlive-fonts-recommended packages to get the
-LaTeX documents that org-mode produces to compile. You can get both
-of these (plus dvipng) through the Ubuntu package texlive-full, so
-simply installing the `texlive-full` package may be the easiest option
-if you happen to be on Ubuntu. I do not have any experience with LaTeX
-under Microsoft Windows, but certainly it should be possible for all
-these examples to work under that OS, assuming you have a local LaTeX
-installation.
+LaTeX documents that org-mode produces to compile. You can get both of
+these (plus dvipng) through the Ubuntu package texlive-full, so simply
+installing the `texlive-full` package may be the easiest option if you
+happen to be on Ubuntu.
+
+For Windows users who have installed MikTeX, I had to use the MikTeX
+package manager to install the following packages for LaTeX support to
+work: soul, marvosysm, wasysym, wasy, zhmetrics. Install these and you
+should be good to go.
+
+For inline image support,
+6) libpng, GNU/Linux users probably have this.  I found under Windows
+   that I had to download
+   http://downloads.sourceforge.net/gnuwin32/libpng-1.2.37-setup.exe
+   and after running the installation program, *manually* copy the
+   libpng12.dll and zlib1.dll files into my emacs-23.2\bin directory,
+   and then restart emacs for inline image support to work. One easy
+   way to test if png support is working is to simply open a png file
+   within Emacs from dired.
   
 * Setting up org-mode for source code evaluation 
 
@@ -415,7 +431,6 @@ several things to notice.
   dsmall <-diamonds[sample(nrow(diamonds), 100), ] 
   qplot(carat, price, data = dsmall)
 #+end_src
-
   
 This opens up many opportunities for doing interesting things with R
 within your org-mode documents!
@@ -497,6 +512,7 @@ documentation. <<R-latex()>>~is the de facto standard for the
 communication and publication of scientific
 documents. <<R-latex()>>~is available as free software.
 #+end_src
+
 
 ** A more complicated example
 
