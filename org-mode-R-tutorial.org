@@ -3,6 +3,7 @@
 #+EMAIL:     eriki@ccbr.umn.edu
 #+INFOJS_OPT: view:info toc:nil
 #+OPTIONS: skip:t
+#+BABEL: :exports code 
 
 This is an introduction to using R ([[http://www.R-project.org]]) source
 code within Emacs org-mode ([[http://orgmode.org]]). Org-mode files use
@@ -59,6 +60,36 @@ HTML or PDF, I wrote this tutorial in org-mode. You will benefit most
 from it by following along in org-mode. Only then can you
 interactively evaluate the examples to see org-mode in action.
 
+For those following along in an exported version, such as HTML, 
+in the actual org-mode file, source code blocks look like this:
+
+#+begin_example
+#+begin_src R 
+  # some R code 
+  square <- function(x) 
+  {
+    x * x
+  }
+    
+  square(1:10)
+#+end_src 
+#+end_example
+
+However, when they are /exported/ they will look like: 
+
+#+begin_src R 
+  # some R code 
+  square <- function(x) 
+  {
+    x * x
+  }
+    
+  square(1:10)
+#+end_src 
+
+It's just something to be aware of when following along from an
+exported version. 
+
 This tutorial was written in GNU Emacs 23.2 on Ubuntu 10.04, org-mode
 version 7.01trans, pulled directly from the org-mode git repository.
 
@@ -112,7 +143,9 @@ For inline image support,
 
 Setting up org-mode to run source code is very simple. Since you are
 reading the R tutorial, I will assume you want to specifically run R
-source code blocks within org-mode.
+source code blocks within org-mode. Since we use LaTeX later on in 
+the tutorial, we'll also take the opportunity to set up org-mode
+to evaluate LaTeX blocks. 
 
 The absolute, bare minimum setup you need to perform is to run the
 following Emacs lisp code. For a preview of what we're going to learn
@@ -128,7 +161,8 @@ So go ahead, hit C-c C-c with point in the following code block.
 #+begin_src emacs-lisp :results silent
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((R . t)))
+   '((R . t)
+     (latex . t)))
 #+end_src
 
 If you received any type of error message, please make sure that you
@@ -196,7 +230,7 @@ changes you made reflected in this org-mode buffer. You can control
 how this new buffer is displayed by setting the org-src-window-setup
 variable in Emacs.
 
-#+begin_src R
+#+begin_src R 
   square <- function(x) 
   {
     x * x
@@ -449,17 +483,6 @@ installation. You will also need to install the dvipng program (dvipng
 package in Ubuntu, for instance). See the System Requirements section
 for other prerequisites.
 
-You also have to add LaTeX to the list of supported languages. You can
-do that by running the following code block with C-c C-c.
-
-#+begin_src emacs-lisp :results silent
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((R . t)
-     (latex . t)))
-#+end_src
-
-
 ** A simple example 
 
 Let's work on a very simple example, displaying a LaTeX description
@@ -475,7 +498,7 @@ run the following code block, it will be run automatically by the next
 one.
 
 #+srcname: R-latex
-#+begin_src R :results silent 
+#+begin_src R :results silent
   lf <- function() {
       "\\LaTeX"
   }
@@ -510,7 +533,14 @@ generating the string \\LaTeX, which is then substituted into this
 LaTeX code block, and then turned into the LaTeX logo by the latex
 program.
 
-#+begin_src latex :noweb yes :file latex-logo.png
+#+begin_src emacs-lisp :results silent 
+    (setq org-format-latex-options 
+          '(:foreground default :background default :scale 1.0
+                        :html-foreground "Black" :html-background "Transparent"
+                        :html-scale 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))))
+#+end_src
+
+#+begin_src latex :noweb yes :file (if (and (boundp 'htmlp) htmlp) "latex-logo-html.png" "latex-logo.png") :buffer (if (and (boundp 'htmlp) htmlp) "no" t)
 <<R-latex()>>~is a high-quality typesetting system; it includes
 features designed for the production of technical and scientific
 documentation. <<R-latex()>>~is the de facto standard for the
@@ -518,41 +548,72 @@ communication and publication of scientific
 documents. <<R-latex()>>~is available as free software.
 #+end_src
 
-
-** A more complicated example
+** A more complicated example, exporting LaTeX in buffer, to HTML, and to PDF
 
 Now let's try something a little more complex, using an R function
-that that generates a full LaTeX table. This depends on having the R
-package Hmisc installed. If you don't have it installed, start up R
-and then do: > install.packages("Hmisc")
+that generates a full LaTeX table. This particular example depends on
+having the R package Hmisc installed. If you don't have it installed,
+start up R and then do: > install.packages("Hmisc")
 
-You do /not/ need to run the following code block. Running it will
-produce raw LaTeX code. This is fine when we run the latex code block,
-because it will be inserted and correctly processed. But if you do
-run this next R source code block, you'll just get a bunch of LaTeX
-code in the results section.
+What follows is an R source block that generates some LaTeX code
+representing a table.  We want to be able to insert a =png= image of
+the table in the buffer when run with C-c C-c, using the colors of our
+current Emacs buffer.
 
-#+srcname: Hmisc-latex
-#+begin_src R :results output
+For HTML export, we also want to generate a =png=. However, we want
+the background to be transparent, not whatever color our Emacs buffer
+happened to be.
+
+For LaTeX output, we don't need a =png= file at all, we would of
+course prefer to simply insert the auto-generated LaTeX code in the
+exported LaTeX document, and then compile to PDF.
+
+The following should accomplish all three goals.  
+
+We tell the R code block to output latex code using the syntax
+/:results output latex/.  Also, only export the code.  If we export
+both, then the code would get exported twice when we export to PDF,
+once from each code block.  It would actually be exported twice when
+we export to HTML, but in that case, since the results are wrapped
+in #+BEGIN\_LATEX/#+END\_LATEX lines, and are therefore not included
+in the HTML export.
+
+In the LaTeX code block, a file will be generated for in-buffer
+evaluation and HTML export, but we don't want it produced for LaTeX
+export, otherwise the image /and/ the actual table will be included in
+the PDF.  
+
+The final /buffer/ argument controls the color selection through the
+=org-format-latex-options= variable. Essentially, if buffer is set to
+'yes', your Emacs buffer colors will be used as arguments to the
+=dvipng= program used to produce the image, assuming you don't change
+that values of the elements to something other than 'default' in
+=org-format-latex-options=. If buffer is 'no', then the html* elements
+of that variable will be used.
+
+#+srcname:Hmisc-latex
+#+begin_src R :results output :exports code
   set.seed(1) 
   library(Hmisc)
     
   df <- data.frame(age = rnorm(100, 10),
                    gender = sample(c("Male", "Female"), 100, replace = TRUE),
                    study.drug = sample(c("Active", "Placebo"), 100, replace = TRUE))
+
+  label(df$study.drug) <- "Treatment" 
+  label(df$age) <- "Age at randomization" 
+  label(df$gender) <- "Gender" 
     
   latex(summary(study.drug ~ age + gender, data = df,
                 method = "reverse", overall = TRUE, test = TRUE), 
-        long = TRUE,  file = "", round = 2)
+        long = TRUE,  file = "", round = 2, exclude1 = FALSE, npct = "both",
+        where="!htbp")
 #+end_src
 
-This next source code block is the one you should evaluate with C-c
-C-c. You should be a graphical representation of a LaTeX table
-inserted into the buffer.
+#+begin_src latex :noweb yes :file (if (and (boundp 'latexp) latexp) nil (if (and (boundp 'htmlp) htmlp) "hmisc-html.png" "hmisc.png")) :buffer (if (and (boundp 'htmlp) htmlp) "no" t)
+<<Hmisc-latex()>>
+#+end_src 
 
-#+begin_src latex :noweb yes :file Hmisc-latex.png
-  <<Hmisc-latex()>>
-#+end_src
 
 * Putting it all together, a notebook interface to R
 
