@@ -531,14 +531,8 @@ actually valid in some languages that org-mode supports.
 Run the following code block. The "R-latex" R code block will be run,
 generating the string \\LaTeX, which is then substituted into this
 LaTeX code block, and then turned into the LaTeX logo by the latex
-program.
-
-#+begin_src emacs-lisp :results silent 
-    (setq org-format-latex-options 
-          '(:foreground default :background default :scale 1.0
-                        :html-foreground "Black" :html-background "Transparent"
-                        :html-scale 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))))
-#+end_src
+program. Don't worry about the complicated header arguments, those
+will be explained in more detail in the next section. 
 
 #+begin_src latex :noweb yes :file (if (and (boundp 'htmlp) htmlp) "latex-logo-html.png" "latex-logo.png") :buffer (if (and (boundp 'htmlp) htmlp) "no" t)
 <<R-latex()>>~is a high-quality typesetting system; it includes
@@ -560,9 +554,13 @@ representing a table.  We want to be able to insert a =png= image of
 the table in the buffer when run with C-c C-c, using the colors of our
 current Emacs buffer.
 
-For HTML export, we also want to generate a =png=. However, we want
-the background to be transparent, not whatever color our Emacs buffer
-happened to be.
+A few sections from now, I'll touch on the exporting features of
+org-mode.  Org can generate HTML and PDF versions of documents like
+this one. 
+
+Back to our example, for HTML export, we also want to generate a
+=png=. However, we want the background to be transparent, not whatever
+color our Emacs buffer happened to be.
 
 For LaTeX output, we don't need a =png= file at all, we would of
 course prefer to simply insert the auto-generated LaTeX code in the
@@ -613,7 +611,6 @@ of that variable will be used.
 #+begin_src latex :noweb yes :file (if (and (boundp 'latexp) latexp) nil (if (and (boundp 'htmlp) htmlp) "hmisc-html.png" "hmisc.png")) :buffer (if (and (boundp 'htmlp) htmlp) "no" t)
 <<Hmisc-latex()>>
 #+end_src 
-
 
 * Putting it all together, a notebook interface to R
 
@@ -746,15 +743,15 @@ Org-mode provides a rich set of functions and customizations for
 exporting documents into more human-readable forms, and for users who
 are not Emacs or org-mode users. The most common methods are
 generating PDF documents through LaTeX, and HTML output. Source code
-will be syntax highlighted.
+will be syntax highlighted, in HTML.  There are various options for
+PDF, including using the listings package.
 
 With org-mode source blocks, you can choose to export the source code,
 the results of evaluating the source code, neither, or both.
-
-As an example, type C-c C-e b to see an HTML version of this document.
-
 The :exports header argument controls this. See the [[http://orgmode.org/manual/Exporting-code-blocks.html#Exporting-code-blocks][documentation]] for
 further examples. 
+
+As an example, type C-c C-e b to see an HTML version of this document.
 
 Some fairly sophisticated processes, including complete report
 generation using R graphics and tables, can be achieved through this
