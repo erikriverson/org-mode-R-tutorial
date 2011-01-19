@@ -1,9 +1,13 @@
-#+TITLE:    Using R in Emacs org-mode
+#+OPTIONS:    H:3 num:nil toc:2 \n:nil @:t ::t |:t ^:{} -:t f:t *:t TeX:t LaTeX:t skip:t d:(HIDE) tags:not-in-toc
+#+STARTUP:    align fold nodlcheck hidestars oddeven lognotestate 
+#+SEQ_TODO:   TODO(t) INPROGRESS(i) WAITING(w@) | DONE(d) CANCELED(c@)
+#+TAGS:       Write(w) Update(u) Fix(f) Check(c) noexport(n)
+#+TITLE:    Org-mode and R: An Introduction
 #+AUTHOR:    Erik Iverson
-#+EMAIL:     eriki@ccbr.umn.edu
-#+INFOJS_OPT: view:info toc:nil
-#+OPTIONS: skip:t
-#+BABEL: :exports code 
+#+EMAIL:     eriki at ccbr dot umn dot edu
+#+LANGUAGE:   en
+#+STYLE:      <style type="text/css">#outline-container-introduction{ clear:both; }</style>
+#+BABEL: :exports both
 
 This is an introduction to using R ([[http://www.R-project.org]]) source
 code within Emacs org-mode ([[http://orgmode.org]]). Org-mode files use
@@ -28,6 +32,20 @@ If you have an older version of org-mode, and just want to read about
 the possibilities, you can continue on.
 
 * Introduction
+
+#+begin_html
+  <div id="subtitle" style="float: center; text-align: center;">
+  <p>
+  Org-mode support for
+  <a href="http://www.r-project.org/">R</a>
+  </p>
+  <p>
+  <a href="http://www.r-project.org/">
+  <img src="http://www.r-project.org/Rlogo.jpg"/>
+  </a>
+  </p>
+  </div>
+#+end_html
 
 Emacs org-mode 7.01 has an exciting new feature that lets you submit
 source code blocks within an org-mode document for evaluation. This
@@ -58,7 +76,9 @@ amazing system!
 Although you may be viewing this tutorial in an exported format like
 HTML or PDF, I wrote this tutorial in org-mode. You will benefit most
 from it by following along in org-mode. Only then can you
-interactively evaluate the examples to see org-mode in action.
+interactively evaluate the examples to see org-mode in action. For
+this reason, I suggest you download the [[http://repo.or.cz/w/Worg.git/blob_plain/HEAD:/org-contrib/babel/languages/ob-doc-R-extended.org][actual org mode file]] that this
+document is based on, visit the file in Emacs, and follow along there.
 
 For those following along in an exported version, such as HTML, 
 in the actual org-mode file, source code blocks look like this:
@@ -75,9 +95,10 @@ in the actual org-mode file, source code blocks look like this:
 #+end_src 
 #+end_example
 
-However, when they are /exported/ they will look like: 
+However, when they are /exported/ into documents like this they will
+look like:
 
-#+begin_src R 
+#+begin_src R :exports code
   # some R code 
   square <- function(x) 
   {
@@ -87,13 +108,15 @@ However, when they are /exported/ they will look like:
   square(1:10)
 #+end_src 
 
-It's just something to be aware of when following along from an
-exported version. 
+It's something to be aware of when following along from an exported
+version such as HTML, since I will be referencing source code block
+arguments that you will not be able to see.  That is another very good
+reason to follow along with the [[http://repo.or.cz/w/Worg.git/blob_plain/HEAD:/org-contrib/babel/languages/ob-doc-R-extended.org][raw org mode file]]. 
 
 This tutorial was written in GNU Emacs 23.2 on Ubuntu 10.04, org-mode
 version 7.01trans, pulled directly from the org-mode git repository.
 
-Please send any questions or corrections to eriki@ccbr.umn.edu.
+Please send any questions or corrections to eriki at ccbr dot umn dot edu. 
 
 ** System Prerequisites for this tutorial 
 
@@ -190,16 +213,16 @@ won't be asked before org-mode evaluates source code blocks. You may
 view this as a security risk. Always look over the code you're going
 to evaluate before submitting it. 
 
-#+begin_src emacs-lisp :results silent
+#+begin_src emacs-lisp :results silent :exports code
   (setq org-confirm-babel-evaluate nil)
 #+end_src
 
 ** Other supported languages
 
 Besides R, which we just set up with the above source code block, see
-[[http://orgmode.org/manual/Languages.html#Languages][here]] for a list of languages that org-mode currently supports. You
-can then add more languages to your personal setup if you desire, by
-modifying the variable we defined above to include more languages. 
+[[http://orgmode.org/manual/Languages.html#Languages][here]] for a list of languages that org-mode currently supports. You can
+then add more languages to your personal setup if you desire, by
+modifying the variable we defined above to include more languages.
 
 * Org-mode source code blocks 
 ** Exporting pretty-printed source code blocks
@@ -230,7 +253,7 @@ changes you made reflected in this org-mode buffer. You can control
 how this new buffer is displayed by setting the org-src-window-setup
 variable in Emacs.
 
-#+begin_src R 
+#+begin_src R :exports code
   square <- function(x) 
   {
     x * x
@@ -257,13 +280,13 @@ haven't already is to run the following Emacs lisp code, *after*
 changing the "/path/to" portion to reflect your local setup. I have
 the following in my Emacs init file. 
 
-#+begin_src emacs-lisp :results silent 
+#+begin_src emacs-lisp :results silent :exports code
  (add-to-list 'load-path "/path/to/org-mode/contrib/lisp")
 #+end_src
 
 ** Evaluating the code block using org-mode
 
-As I mentioned above, defining the above code block would be useful if
+As I mentioned, defining the above code block would be useful if
 we wanted to export the org-mode document and have the R code in the
 resulting, say, HTML file, syntax highlighted. The feature that
 org-mode now adds in version 7.01 is letting us actually submit the
@@ -363,6 +386,23 @@ for more information on source code block header arguments, including
 the various ways they can be set in an org-mode document: per block,
 per file, or system-wide.
 
+*** Inline code evaluation 
+Much like the Sweave \Sexpr command, we can evaluate small blocks of
+inline code using the
+
+#+begin_example
+SRC_R[optional header arguments]{R source code} 
+#+end_example
+
+syntax.  So, in org-mode I will type
+
+#+begin_example
+SRC_R[:exports results]{round(pi, 2)}
+#+end_example 
+
+and you will see src_R[:exports results]{round(pi, 2)} in the exported
+output.  You'll see examples of how to use the :exports code block
+header in a few sections. 
 * Passing data between code blocks
 
 One of the biggest limitations to using code blocks like above is that
@@ -404,7 +444,7 @@ Running the above code block will result in an error, since a new R
 session was started, and our objects were not available. Now try the
 same code block, but with the :session argument, as below.
 
-#+begin_src R :session
+#+begin_src R :session :results output
   square(x)
 #+end_src
 
@@ -433,7 +473,7 @@ bit of Emacs lisp code. If this feature is something you want every
 time you use org-mode, consider placing the code in your Emacs
 initialization file. Either way, evaluate it with C-c C-c.
 
-#+begin_src emacs-lisp :results silent
+#+begin_src emacs-lisp :results silent :exports code
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)   
   (add-hook 'org-mode-hook 'org-display-inline-images)   
 #+end_src
@@ -498,7 +538,7 @@ run the following code block, it will be run automatically by the next
 one.
 
 #+srcname: R-latex
-#+begin_src R :results silent
+#+begin_src R :results silent :exports code
   lf <- function() {
       "\\LaTeX"
   }
@@ -570,11 +610,11 @@ The following should accomplish all three goals.
 
 We tell the R code block to output latex code using the syntax
 /:results output latex/.  Also, only export the code.  If we export
-both, then the code would get exported twice when we export to PDF,
-once from each code block.  It would actually be exported twice when
-we export to HTML, but in that case, since the results are wrapped
-in #+BEGIN\_LATEX/#+END\_LATEX lines, and are therefore not included
-in the HTML export.
+both, then the LaTeX results would get exported twice when we export
+to PDF, once from each code block.  It would actually be exported
+twice when we export to HTML, but in that case, since the results are
+wrapped in #+BEGIN\_LATEX/#+END\_LATEX lines, and are therefore not
+included in the HTML export.
 
 In the LaTeX code block, a file will be generated for in-buffer
 evaluation and HTML export, but we don't want it produced for LaTeX
@@ -675,7 +715,7 @@ from.
 This first example will not extract any code from the source block.
 It is the default behavior. 
 
-#+begin_src R :tangle no
+#+begin_src R :tangle no :exports code
 # tangle was not specified
 x <- 1:10
 print(x) 
@@ -686,7 +726,7 @@ This will place the code in source code block in
 org-mode-R-tutorial.R, since we don't specify a filename for the .R
 file.
 
-#+begin_src R :tangle yes
+#+begin_src R :tangle yes :exports code
 # tangle was specified, but no file given
 x <- 1:10
 print(x)
@@ -694,7 +734,7 @@ print(x)
 
 This will place the tangled code in Rcode.R, since we specify that name. 
 
-#+begin_src R :tangle Rcode.R
+#+begin_src R :tangle Rcode.R :exports code
 # tangle was specified, and a file name given (Rcode.R)
 x <- 1:10
 print(x)
