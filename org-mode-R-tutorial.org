@@ -4,7 +4,7 @@
 #+TAGS:       Write(w) Update(u) Fix(f) Check(c) noexport(n)
 #+TITLE:    Org-mode and R: An Introduction
 #+AUTHOR:    Erik Iverson
-#+EMAIL:     eriki at ccbr dot umn dot edu
+#+EMAIL:     erik@sigmafield.org
 #+LANGUAGE:   en
 #+STYLE:      <style type="text/css">#outline-container-introduction{ clear:both; }</style>
 #+BABEL: :exports both
@@ -33,35 +33,27 @@ the possibilities, you can continue on.
 
 * Introduction
 
-#+begin_html
-  <div id="subtitle" style="float: center; text-align: center;">
-  <p>
-  Org-mode support for
-  <a href="http://www.r-project.org/">R</a>
-  </p>
-  <p>
-  <a href="http://www.r-project.org/">
-  <img src="http://www.r-project.org/Rlogo.jpg"/>
-  </a>
-  </p>
-  </div>
-#+end_html
+Emacs org-mode 7.01 has an exciting new feature that lets you evaluate
+source code blocks within an org-mode document. This lets you do
+things like:
 
-Emacs org-mode 7.01 has an exciting new feature that lets you submit
-source code blocks within an org-mode document for evaluation. This
-lets you do things like insert the results of R code into an Emacs
-buffer, insert graphical and tabular material into a buffer, or pass
-the results of R code to other programming languages such as Python. R
-code and results can be included in your exported org-mode documents,
-opening up several interesting possibilities for automatically
-generating comprehensive documentation and advanced reports. You can
-also extract the source code portions of an org-mode document for
-further processing, through a process called tangling. This tutorial
-will get you started using these org-mode features together with the R
-programming language.
+- insert the results of R code into an Emacs buffer 
+- insert graphics and tabular material into a buffer
+- insert /graphical depictions/ of LaTeX output into an Emacs buffer 
+- pass the results of R code to other programming languages such as
+  Python in the same document
+- export code and results (similar to Sweave) simultaneously to LaTeX
+  and HTML reports /without having to write any markup/
+
+These techniques open up several interesting possibilities for
+automatically generating comprehensive documentation and advanced
+reports. You can also extract the source code portions of an org-mode
+document for further processing, through a process called
+tangling. This tutorial will get you started using these org-mode
+features together with the R programming language.
 
 If you are unfamiliar with org-mode itself, you can learn a lot more
-from the project's [[orgmode.org][website]]. There are many good tutorials available on
+from the project's [[http://orgmode.org][website]]. There are many good tutorials available on
 org-mode already. The [[http://orgmode.org/guide/index.html][compact guide]] is a great place to start. This
 current document focuses on source code support. Note that while the
 features being demonstrated in this document were being developed, the
@@ -77,8 +69,10 @@ Although you may be viewing this tutorial in an exported format like
 HTML or PDF, I wrote this tutorial in org-mode. You will benefit most
 from it by following along in org-mode. Only then can you
 interactively evaluate the examples to see org-mode in action. For
-this reason, I suggest you download the [[http://repo.or.cz/w/Worg.git/blob_plain/HEAD:/org-contrib/babel/languages/ob-doc-R-extended.org][actual org mode file]] that this
-document is based on, visit the file in Emacs, and follow along there.
+this reason, I suggest you download the [[https://github.com/erikriverson/org-mode-R-tutorial/raw/master/org-mode-R-tutorial.org][actual org mode file]] that this
+document is based on, then visit the file in Emacs, and follow along
+there. If you're an Emacs or org-mode user, you should do this now!
+Note that the link is to a file in a [[http://www.github.com][Github]] repository, 
 
 For those following along in an exported version, such as HTML, 
 in the actual org-mode file, source code blocks look like this:
@@ -111,12 +105,10 @@ look like:
 It's something to be aware of when following along from an exported
 version such as HTML, since I will be referencing source code block
 arguments that you will not be able to see.  That is another very good
-reason to follow along with the [[http://repo.or.cz/w/Worg.git/blob_plain/HEAD:/org-contrib/babel/languages/ob-doc-R-extended.org][raw org mode file]]. 
+reason to follow along with the [[https://github.com/erikriverson/org-mode-R-tutorial/raw/master/org-mode-R-tutorial.org][raw org mode file]]. 
 
 This tutorial was written in GNU Emacs 23.2 on Ubuntu 10.04, org-mode
 version 7.01trans, pulled directly from the org-mode git repository.
-
-Please send any questions or corrections to eriki at ccbr dot umn dot edu. 
 
 ** System Prerequisites for this tutorial 
 
@@ -129,7 +121,10 @@ Here is a list of software we need to run the examples:
 2) a working R installation, see [[http://www.R-project.org]]
 3) The R examples use the ggplot2 and Hmisc packages from CRAN. Simply install from the
    R command line by issuing the command, 
-   > install.packages(c("ggplot2", "Hmisc"))
+#+begin_src R :eval never :exports code 
+  install.packages(c("ggplot2", "Hmisc"))
+#+end_src
+
    R must be in your PATH environment variable.  For Windows users, you will probably
    have to add this yourself. 
 
@@ -343,7 +338,7 @@ then hit C-c C-c again. The results have updated to the new value!
 We just saw how the last value after evaluating our code is put into
 an org-mode table by default. That is potentially very useful, but
 what if we just want to see the R output as it would appear printed in
-the R console? Well, just as R function have arguments, org-mode
+the R console? Well, just as R functions have arguments, org-mode
 source blocks have arguments. One of the arguments controls how the
 output is displayed, the :results argument. It is set to 'value' by
 default, but we can change it to 'output' to see the usual R
@@ -504,7 +499,7 @@ several things to notice.
    the actual org-mode document! Run the following source code block
    to see how it works.
 
-#+begin_src R :results output :file diamonds.png
+#+begin_src R :results output graphics :file diamonds.png
   library(ggplot2)
   data(diamonds)
   dsmall <-diamonds[sample(nrow(diamonds), 100), ] 
@@ -651,6 +646,9 @@ of that variable will be used.
 #+begin_src latex :noweb yes :file (if (and (boundp 'latexp) latexp) nil (if (and (boundp 'htmlp) htmlp) "hmisc-html.png" "hmisc.png")) :buffer (if (and (boundp 'htmlp) htmlp) "no" t)
 <<Hmisc-latex()>>
 #+end_src 
+
+#+results:
+[[file:hmisc.png]]
 
 * Putting it all together, a notebook interface to R
 
@@ -824,8 +822,8 @@ As with all new processes, it can be a challenge to start working with
 source code this way. As a current org-mode user, I think the
 benefits are clear.
 
-As for what to do next, try looking at the [[http://orgmode.org/worg/org-contrib/babel/uses.php][results]] of some of those
-who use org-mode with org-babel to accomplish interesting things. You
+As for what to do next, try looking at the [[http://orgmode.org/worg/org-contrib/babel/uses.php][results]] of those who use
+org-mode's source code support to accomplish interesting things. You
 can look at current documentation for R support [[http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.php][here]].
 
 For an exercise in using org-mode with source code, you can write your
