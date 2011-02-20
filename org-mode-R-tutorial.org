@@ -9,23 +9,24 @@
 #+STYLE:      <style type="text/css">#outline-container-introduction{ clear:both; }</style>
 #+BABEL: :exports both
 
-This is an introduction to using R ([[http://www.R-project.org]]) source
-code within Emacs org-mode ([[http://orgmode.org]]). Org-mode files use
-headlines to organize information. Each top-level headline in this
-document starts with a single '*', like the "Introduction" headline
-below. While this is not an introduction to using org-mode, you will
-need to know one command to proceed: use the TAB key on a headline to
-open it. TAB will cycle through the possible visibility states of the
-information under the headline, and eventually TAB will collapse the
-headline back to how you see it now. One last command to note: C-c C-o
-opens links like those above in your web browser. I have tried to link
-to the appropriate documentation for each feature I describe.
+This is an introduction to writing and evaluating R
+([[http://www.R-project.org]]) source code within Emacs org-mode
+([[http://orgmode.org]]) buffers. Org-mode files use headlines to organize
+information. Each top-level headline in this document starts with a
+single '*', like the "Introduction" headline below. While this is
+/not/ an introduction to using org-mode, you will need to know one
+command to proceed: use the TAB key on a headline to open it. TAB will
+cycle through the possible visibility states of the information under
+the headline, and eventually TAB will collapse the headline back to
+how you see it now. One last command to note: C-c C-o opens links like
+those above in your web browser. I have tried to link to the
+appropriate documentation for each feature I describe.
 
 Since you are following along in org-mode, instead of reading this in
 an exported format like HTML or PDF, you will need org-mode 7.01 or
-greater to go interact with this tutorial. See [[http://orgmode.org/index.html#sec-3][here]] for instructions
-on how to download the latest version of org-mode. To see what version
-of org-mode you have installed, type M-x org-version, and hit
+newer to go interact with this tutorial. See [[http://orgmode.org/index.html#sec-3][here]] for instructions on
+how to download the latest version of org-mode. To see what version of
+org-mode you have installed, type M-x org-version, and hit
 <ENTER>. The result will be in the minibuffer. If the version is
 anything less than 7.01, you'll need to update to run the examples.
 If you have an older version of org-mode, and just want to read about
@@ -49,7 +50,7 @@ These techniques open up several interesting possibilities for
 automatically generating comprehensive documentation and advanced
 reports. You can also extract the source code portions of an org-mode
 document for further processing, through a process called
-tangling. This tutorial will get you started using these org-mode
+/tangling/. This tutorial will get you started using these org-mode
 features together with the R programming language.
 
 If you are unfamiliar with org-mode itself, you can learn a lot more
@@ -60,10 +61,9 @@ features being demonstrated in this document were being developed, the
 project was known as org-babel. Thus, many of the variables and
 function names reference 'org-babel' in their names. Org-babel is now
 distributed with org-mode, so many of the previous configuration
-hurdles are now avoided. Keep this in mind as you read old mailing
-list posts and documentation. The authors of org-babel are Eric
-Schulte and Dan Davison. They have worked very hard creating this
-amazing system!
+hurdles are now gone. Keep this in mind as you read old mailing list
+posts and documentation. The authors of org-babel are Eric Schulte and
+Dan Davison. They have worked very hard creating this amazing system!
 
 Although you may be viewing this tutorial in an exported format like
 HTML or PDF, I wrote this tutorial in org-mode. You will benefit most
@@ -72,7 +72,9 @@ interactively evaluate the examples to see org-mode in action. For
 this reason, I suggest you download the [[https://github.com/erikriverson/org-mode-R-tutorial/raw/master/org-mode-R-tutorial.org][actual org mode file]] that this
 document is based on, then visit the file in Emacs, and follow along
 there. If you're an Emacs or org-mode user, you should do this now!
-Note that the link is to a file in a [[http://www.github.com][Github]] repository, 
+Note that the link is to a file in a [[https://github.com/erikriverson/org-mode-R-tutorial][Github]] repository, if you'd like
+to clone it on your system for easy updating in the future, you should
+do that now.
 
 For those following along in an exported version, such as HTML, 
 in the actual org-mode file, source code blocks look like this:
@@ -105,7 +107,9 @@ look like:
 It's something to be aware of when following along from an exported
 version such as HTML, since I will be referencing source code block
 arguments that you will not be able to see.  That is another very good
-reason to follow along with the [[https://github.com/erikriverson/org-mode-R-tutorial/raw/master/org-mode-R-tutorial.org][raw org mode file]]. 
+reason to follow along with the [[https://github.com/erikriverson/org-mode-R-tutorial/raw/master/org-mode-R-tutorial.org][raw org mode file]]. However, an
+exported version is still worth reading if you simply want to learn
+about some of the capabilities and philosophy of org-mode.
 
 This tutorial was written in GNU Emacs 23.2 on Ubuntu 10.04, org-mode
 version 7.01trans, pulled directly from the org-mode git repository.
@@ -125,8 +129,9 @@ Here is a list of software we need to run the examples:
   install.packages(c("ggplot2", "Hmisc"))
 #+end_src
 
-   R must be in your PATH environment variable.  For Windows users, you will probably
-   have to add this yourself. 
+   The directory containing the R binary must be in your PATH
+   environment variable.  For Windows users, you will probably have to
+   add this yourself.
 
 For LaTeX support, 
 4) a working LaTeX installation, see [[http://latex-project.org]]. Windows users
@@ -139,7 +144,7 @@ For LaTeX support,
    texlive-latex-extra and texlive-fonts-recommended packages to get
    the LaTeX documents that org-mode produces to compile. You can get
    both of these (plus dvipng) through the Ubuntu package
-   texlive-full, so simply installing the `texlive-full` package may
+   texlive-full, so simply installing the `texlive-full` package will
    be the easiest option if you happen to be on Ubuntu.
 
    For Windows users who have installed MikTeX, I had to use the
@@ -148,8 +153,8 @@ For LaTeX support,
    these and you should be good to go.
 
 For inline image support,
-7) libpng, GNU/Linux users probably have this.  I found under Windows
-   that I had to download
+7) libpng, GNU/Linux users should already have this.  I found under
+   Windows that I had to download
    http://downloads.sourceforge.net/gnuwin32/libpng-1.2.37-setup.exe
    and after running the installation program, *manually* copy the
    libpng12.dll and zlib1.dll files into my emacs-23.x\bin directory,
@@ -159,22 +164,27 @@ For inline image support,
   
 * Setting up org-mode for source code evaluation 
 
-Setting up org-mode to run source code is very simple. Since you are
-reading the R tutorial, I will assume you want to specifically run R
-source code blocks within org-mode. Since we use LaTeX later on in 
-the tutorial, we'll also take the opportunity to set up org-mode
-to evaluate LaTeX blocks. 
+Setting up org-mode to run source code is very simple. So simple in
+fact, that we can do it from right inside this document, using the
+very mechanism its describing (how very GEB!). Since you are reading
+the R tutorial, I will assume you want to specifically run R source
+code blocks within org-mode. Since we use LaTeX later on in the
+tutorial, we'll also take the opportunity to set up org-mode to
+evaluate LaTeX blocks.
 
 The absolute, bare minimum setup you need to perform is to run the
 following Emacs lisp code. For a preview of what we're going to learn
-with in this tutorial, simply hit C-c C-c anywhere in the following code
-block! You will be asked in the minibuffer to confirm that you want
-to evaluate the source code contained in the block. Confirm this, and
-you'll be set up for the rest of the tutorial. You can also add the
-lines between the #+begin\_src and #+end\_src lines to your Emacs
-initialization file, so that they are always run when starting Emacs.
+with in this tutorial, simply hit C-c C-c anywhere in the following
+code block to evaluate it! You will be asked in the minibuffer to
+confirm that you want to evaluate the source code contained in the
+block. Confirm this, and you'll be set up for the rest of the
+tutorial. You can also add the lines between the #+begin_src
+and #+end_src lines to your Emacs initialization file, so that they
+are always run when starting Emacs.
 
-So go ahead, hit C-c C-c with point in the following code block. 
+So go ahead, hit C-c C-c with point in the following code block. The
+tutorial will explain the syntax of the block, so don't worry about
+that now!
 
 #+begin_src emacs-lisp :results silent
   (org-babel-do-load-languages
@@ -190,23 +200,24 @@ running org-mode version 6.xx or before, please visit the project web
 site for instructions on downloading the latest version.
 
 If you didn't get any errors, org-mode is now setup to run the R
-examples that follow.
+examples that follow. You should have seen the result of the code
+block (a list) printed in the minibuffer.
 
-Note to Windows users. Make sure the directory containing the R
-executable is added to your PATH variable for you to run these
-examples.
+Note to Windows users. As mentioned above in the requirements section,
+make sure the directory containing the R executable is added to your
+PATH variable for you to run these examples.
 
 ** Prompting for confirmation before evaluating code 
-There is one more variable I set in my Emacs initialization file
-relating to evaluating source code in org-mode. By default, org-mode
-will ask you to confirm each and every time you evaluate a source code
-block. If you ran the above source code block with C-c C-c, you will
-have noticed that behavior. I turn this feature off with the
-following line. If you choose, simply hit C-c C-c to evaluate it for
-this session, or put it in your Emacs initialization file. Then, you
-won't be asked before org-mode evaluates source code blocks. You may
-view this as a security risk. Always look over the code you're going
-to evaluate before submitting it. 
+Although not necessary, there is one more variable I set in my Emacs
+initialization file relating to evaluating source code in org-mode. By
+default, org-mode will ask you to confirm each and every time you
+evaluate a source code block. If you ran the above source code block
+with C-c C-c, you will have noticed that behavior. I turn this feature
+off with the following line. If you choose, simply hit C-c C-c to
+evaluate it for this session, or put it in your Emacs initialization
+file. Then, you won't be asked before org-mode evaluates source code
+blocks. /You may view this as a security risk/. Always look over the
+code you're going to evaluate before submitting it to the system. 
 
 #+begin_src emacs-lisp :results silent :exports code
   (setq org-confirm-babel-evaluate nil)
@@ -219,7 +230,7 @@ Besides R, which we just set up with the above source code block, see
 then add more languages to your personal setup if you desire, by
 modifying the variable we defined above to include more languages.
 
-* Org-mode source code blocks 
+* Org-mode source code blocks (Or, Finally! We can start!)
 ** Exporting pretty-printed source code blocks
 
 Before I show you how to evaluate code in org-mode, let's start off
@@ -236,8 +247,10 @@ buffer is then in ESS mode. All the ESS key bindings, interaction
 with the inferior R process, and syntax highlighting work as expected.
 
 So here is an example of a source code block. The defining feature is
-the #+begin\_src and #+end\_src lines, with the language definition,
-"R", on the first line. 
+the #+begin_src and #+end_src lines, with the language definition,
+"R", on the first line. All our R code comes between the #+begin_src
+and #+end_src blocks. There will be many of these blocks throughout
+this document.
 
 Try opening this code block by putting point anywhere inside of it,
 and hitting C-c ' (that's a single quote). This will open a new
@@ -245,8 +258,8 @@ buffer, with the contents of the source code block. You can then edit
 this buffer just like any other R file, as it is in R-mode from
 ESS. When finished editing, hit C-c ' again, and you'll see any
 changes you made reflected in this org-mode buffer. You can control
-how this new buffer is displayed by setting the org-src-window-setup
-variable in Emacs.
+how this new ESS-mode buffer is displayed by setting the
+org-src-window-setup variable in Emacs.
 
 #+begin_src R :exports code
   square <- function(x) 
@@ -258,11 +271,13 @@ variable in Emacs.
 #+end_src 
 
 So now we have this code block defined. Why would we want to do
-something like that with org-mode? Mostly so that when we export an
-org-mode document to a more human-readable format, org-mode recognizes
-those lines as syntax, and highlights them appropriately in the HTML
-or LaTeX output. The lines will be syntax highlighted just like they
-would be in an R code buffer in Emacs.
+something like that with org-mode? First and foremost so that when we
+export an org-mode document to a more human-readable format, org-mode
+recognizes those lines as R syntax, and highlights them appropriately
+in the HTML or LaTeX output. The lines will be syntax highlighted just
+like they would be in an R code buffer in Emacs. In fact, if you're
+reading an exported version of this document, you're actually seeing
+what the code block looks like upon export!
 
 Try this for yourself. With point anywhere in this subtree, for
 example, put it here [ ], hit C-c C-e 1 b (that's the number 'one').
@@ -273,7 +288,8 @@ Note: for syntax highlighting in exported HTML to work, htmlize.el
 must be in your load-path. The easiest way to make that happen if you
 haven't already is to run the following Emacs lisp code, *after*
 changing the "/path/to" portion to reflect your local setup. I have
-the following in my Emacs init file. 
+the following in my Emacs init file, but you can once again just type
+C-c C-c to submit the code and evaluate the lisp.
 
 #+begin_src emacs-lisp :results silent :exports code
  (add-to-list 'load-path "/path/to/org-mode/contrib/lisp")
@@ -397,7 +413,7 @@ SRC_R[:exports results]{round(pi, 2)}
 
 and you will see src_R[:exports results]{round(pi, 2)} in the exported
 output.  You'll see examples of how to use the :exports code block
-header in a few sections. 
+header in a few sections.
 * Passing data between code blocks
 
 One of the biggest limitations to using code blocks like above is that
@@ -499,15 +515,30 @@ several things to notice.
    the actual org-mode document! Run the following source code block
    to see how it works.
 
-#+begin_src R :results output graphics :file diamonds.png
+#+begin_src R :results output graphics :file diamonds.png :bg "transparent"
   library(ggplot2)
   data(diamonds)
   dsmall <-diamonds[sample(nrow(diamonds), 100), ] 
-  qplot(carat, price, data = dsmall)
-#+end_src
+  p <- qplot(carat, price, data = dsmall)
   
+  plot.rrg <- function(...) roundrectGrob(gp = gpar(fill = "skyblue1", col = NA),
+                                          r = unit(0.06, "npc"))
+  
+  panel.rrg <- function(...) roundrectGrob(gp = gpar(fill = "grey80", col = NA),
+                                          r = unit(0.06, "npc"))
+  
+  p + opts(plot.background = plot.rrg) + opts(panel.background = panel.rrg)
+  
+#+end_src
+
+#+results:
+[[file:diamonds.png]]
+
 This opens up many opportunities for doing interesting things with R
 within your org-mode documents!
+
+If you're reading an exported version, you might want to see what this
+looks like in the actual org-mode buffer! 
 
 * Inserting LaTeX output
 
@@ -569,13 +600,17 @@ LaTeX code block, and then turned into the LaTeX logo by the latex
 program. Don't worry about the complicated header arguments, those
 will be explained in more detail in the next section. 
 
-#+begin_src latex :noweb yes :file (if (and (boundp 'htmlp) htmlp) "latex-logo-html.png" "latex-logo.png") :buffer (if (and (boundp 'htmlp) htmlp) "no" t)
+#+begin_src latex :noweb yes :file (if (eq backend 'html) "latex-logo-html.png" "latex-logo.png") :buffer (if (eq backend 'html) "no" t) :scale 2
 <<R-latex()>>~is a high-quality typesetting system; it includes
 features designed for the production of technical and scientific
 documentation. <<R-latex()>>~is the de facto standard for the
 communication and publication of scientific
 documents. <<R-latex()>>~is available as free software.
 #+end_src
+
+#+results:
+[[file:latex-logo.png]]
+
 
 ** A more complicated example, exporting LaTeX in buffer, to HTML, and to PDF
 
@@ -624,12 +659,24 @@ that values of the elements to something other than 'default' in
 =org-format-latex-options=. If buffer is 'no', then the html* elements
 of that variable will be used.
 
+Here is an example of how you can configure these background colors. 
+
+#+begin_src emacs-lisp :results silent
+  (setq org-format-latex-options
+        '(:foreground default :background "rgb 0.3 0.5 0.7" 
+                      :scale 1.5
+                      :html-foreground "Black" :html-background "Transparent"
+                      :html-scale 1.0 
+                      :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
+  
+#+end_src
+
 #+srcname:Hmisc-latex
 #+begin_src R :results output :exports code
-  set.seed(1) 
+  set.seed(21879) 
   library(Hmisc)
     
-  df <- data.frame(age = rnorm(100, 10),
+  df <- data.frame(age = rnorm(100, 50, 10),
                    gender = sample(c("Male", "Female"), 100, replace = TRUE),
                    study.drug = sample(c("Active", "Placebo"), 100, replace = TRUE))
 
@@ -643,12 +690,15 @@ of that variable will be used.
         where="!htbp")
 #+end_src
 
-#+begin_src latex :noweb yes :file (if (and (boundp 'latexp) latexp) nil (if (and (boundp 'htmlp) htmlp) "hmisc-html.png" "hmisc.png")) :buffer (if (and (boundp 'htmlp) htmlp) "no" t)
+#+begin_src latex :noweb yes :file (if (and (boundp 'backend) (eq backend 'latex)) nil (if (and (boundp 'backend) (eq backend 'html)) "hmisc-html.png" "hmisc.png")) :buffer (if (and (boundp 'backend) (eq backend 'html)) "no" t)
 <<Hmisc-latex()>>
 #+end_src 
 
 #+results:
 [[file:hmisc.png]]
+
+
+And here is how that actually looks in the Emacs buffer. 
 
 * Putting it all together, a notebook interface to R
 
@@ -666,7 +716,7 @@ possible.
 
 For instance, I use org-mode to generate HTML for an R blog that I
 run. Several posters to the org-mode mailing list have mentioned
-writing their entire graduate theses in org-mode, and even books.
+writing their entire graduate theses in org-mode. 
 
 I look at this workflow as an alternative to the excellent [[http://www.stat.uni-muenchen.de/~leisch/Sweave/][Sweave]]
 package that cuts out the need for learning LaTeX to produce
