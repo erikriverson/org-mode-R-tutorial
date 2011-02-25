@@ -11,16 +11,23 @@
 
 This is an introduction to writing and evaluating R
 ([[http://www.R-project.org]]) source code within Emacs org-mode
-([[http://orgmode.org]]) buffers. Org-mode files use headlines to organize
-information. Each top-level headline in this document starts with a
-single '*', like the "Introduction" headline below. While this is
-/not/ an introduction to using org-mode, you will need to know one
+([[http://orgmode.org]]) buffers. Briefly, org-mode files use headlines to
+organize information. Each top-level headline in this document starts
+with a single '*', like the "Introduction" headline below. While this
+is /not/ an introduction to using org-mode, you will need to know one
 command to proceed: use the TAB key on a headline to open it. TAB will
-cycle through the possible visibility states of the information under
-the headline, and eventually TAB will collapse the headline back to
-how you see it now. One last command to note: C-c C-o opens links like
-those above in your web browser. I have tried to link to the
-appropriate documentation for each feature I describe.
+cycle through the visibility states of the information under the
+headline, and eventually TAB will collapse the headline back to how
+you see it now. One last command to note: C-c C-o opens links like
+those above (they should be underlined) in your web browser. I have
+tried to link to the appropriate documentation for each feature I
+describe.
+
+One fantastic feature of org-mode is its ability to export content to
+a variety of formats, including HTML. This is very useful in general,
+since you can author documents in org-mode and share it with others in
+a common format. However, it is not as useful when learning about
+features of org-mode such as this document describes.
 
 Since you are following along in org-mode, instead of reading this in
 an exported format like HTML or PDF, you will need org-mode 7.01 or
@@ -203,6 +210,20 @@ If you didn't get any errors, org-mode is now setup to run the R
 examples that follow. You should have seen the result of the code
 block (a list) printed in the minibuffer.
 
+Instead of typing M-x org-version, which is simply calling an
+emacs-lisp function, you could do this through an org-mode source code
+block. Move point to the code block below, and hit C-c C-c again to
+evaluate it. If you're asked to confirm evaluation, go for it!
+
+#+begin_src emacs-lisp :results value
+(org-version)
+#+end_src
+
+This time, because of the different code block argument,
+which will be explained later, we see one great feature of org-mode
+source code blocks. We can automatically insert the results of the
+code blocks in the actual buffer.
+
 Note to Windows users. As mentioned above in the requirements section,
 make sure the directory containing the R executable is added to your
 PATH variable for you to run these examples.
@@ -230,7 +251,7 @@ Besides R, which we just set up with the above source code block, see
 then add more languages to your personal setup if you desire, by
 modifying the variable we defined above to include more languages.
 
-* Org-mode source code blocks (Or, Finally! We can start!)
+* Org-mode source code blocks (Finally, we can start!)
 ** Exporting pretty-printed source code blocks
 
 Before I show you how to evaluate code in org-mode, let's start off
@@ -418,10 +439,11 @@ header in a few sections.
 
 One of the biggest limitations to using code blocks like above is that
 a new R session is started up `behind the scenes` when we evaluate
-each code block. So, if we define a function in one code block, and
-want to use it another code block later on, we are out of luck. This
-limitation can be overcome by using R session-based evaluation, which
-sends the R code to a running ESS process.
+each code block. Not only is this s-l-o-w, but if we define a function
+or data.frame in one code block, and want to use it another code block
+later on, we are out of luck. This limitation can be overcome by using
+R session-based evaluation, which sends the R code to a running ESS
+process when the code block is evaluated.
 
 ** R session-based evaluation 
 
@@ -663,7 +685,7 @@ Here is an example of how you can configure these background colors.
 
 #+begin_src emacs-lisp :results silent
   (setq org-format-latex-options
-        '(:foreground default :background "rgb 0.3 0.5 0.7" 
+        '(:foreground default :background "rgb 1 1 1" 
                       :scale 1.5
                       :html-foreground "Black" :html-background "Transparent"
                       :html-scale 1.0 
@@ -734,7 +756,7 @@ with others, but what about the code itself?
 Most people you have to share code with aren't going to want an
 org-mode file full of source code!
 
-* Tangling code 
+* Tangling code
 
 With many projects, you will have to share /code/ with other
 programmers, who are most likely not going to be programming in
@@ -831,8 +853,8 @@ Org-mode provides a rich set of functions and customizations for
 exporting documents into more human-readable forms, and for users who
 are not Emacs or org-mode users. The most common methods are
 generating PDF documents through LaTeX, and HTML output. Source code
-will be syntax highlighted, in HTML.  There are various options for
-PDF, including using the listings package.
+will be syntax highlighted in HTML. There are various options for
+doing this in PDF, including using the listings package.
 
 With org-mode source blocks, you can choose to export the source code,
 the results of evaluating the source code, neither, or both.
@@ -852,9 +874,6 @@ with the advantages of:
 - writing code in org-mode gives you access to a hyper-commenting
   system, with features such as TODO items, in-document linking, tags, 
   and code folding.
-
-If you're an advanced LaTeX user, you probably don't view point 1
-above as an advantage. :) 
 
 Whether or not you use all the features that org-mode provides, you
 can use the system for literate programming and reproducible research,
@@ -888,4 +907,4 @@ In short, there are many possibilities using these techniques! In many
 ways, I have only scratched the surface of the capabilities of
 org-mode in this tutorial. As always, the [[http://orgmode.org/manual/index.html#Top][official manual]] will be the
 source of the most up-to-date information and features of this great
-tool.
+tool. Happy org-ing!
